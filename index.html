@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WriteTogether — Écrivez ensemble</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --or-fonce: #a67c3a;
+  --or-clair: #d4af6a;
+  --beige-clair: #e8dcc0;
+  --parchemin: #f4ead5;
+  --parchemin-clair: #faf3e0;
+  --encre: #2b2419;
+  --encre-claire: #4a3f2f;
+  --rouge-sceau: #8b3a2f;
+  --ombre: rgba(43, 36, 25, 0.15);
+  --beige: #c9b68a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'EB Garamond', serif;
+  background: var(--parchemin);
+  color: var(--encre);
+  line-height: 1.7;
+  overflow-x: hidden;
+  min-height: 100vh;
+  background-image: 
+    radial-gradient(ellipse at top left, rgba(212, 175, 106, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(166, 124, 58, 0.1) 0%, transparent 50%);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.3 0 0 0 0 0.2 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+}
+
+button { font-family: inherit; cursor: pointer; border: none; transition: all 0.3s ease; }
+input, textarea { font-family: inherit; outline: none; }
+.hidden { display: none !important; }
+
+/* ============ SETUP WARNING (si Firebase pas configuré) ============ */
+.setup-warning {
+  position: fixed;
+  inset: 0;
+  background: var(--parchemin);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.setup-box {
+  max-width: 600px;
+  background: var(--parchemin-clair);
+  border: 1px solid var(--or-fonce);
+  padding: 3rem;
+  text-align: center;
+}
+
+.setup-box h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--encre);
+}
+
+.setup-box p {
+  font-family: 'EB Garamond', serif;
+  color: var(--encre-claire);
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+.setup-box code {
+  display: block;
+  background: var(--parchemin);
+  padding: 1rem;
+  border: 1px dashed var(--or-fonce);
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: var(--encre);
+  margin: 1rem 0;
+  text-align: left;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* ============ LANDING ============ */
+.landing {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+}
+
+.landing-container {
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.brand {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  font-size: 1rem;
+  color: var(--or-fonce);
+  margin-bottom: 1.5rem;
+}
+
+.brand::before, .brand::after { content: '❦'; margin: 0 0.8rem; opacity: 0.7; }
+
+h1.main-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(2.8rem, 7vw, 4.5rem);
+  line-height: 1;
+  color: var(--encre);
+  margin-bottom: 1rem;
+}
+
+h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400; }
+
+.divider {
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--or-fonce), transparent);
+  margin: 1.5rem auto;
+  position: relative;
+}
+
+.divider::before {
+  content: '◈';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--parchemin);
+  padding: 0 0.8rem;
+  color: var(--or-fonce);
+  font-size: 0.8rem;
+}
+
+.main-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--encre-claire);
+  margin-bottom: 3rem;
+}
+
+.actions-wrap {
+  display: grid;
+  gap: 1rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.action-primary {
+  background: linear-gradient(135deg, var(--parchemin-clair), var(--beige-clair));
+  border: 1px solid var(--or-fonce);
+  padding: 2rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--or-fonce), transparent);
+  transform: scaleX(0);
+  transition: transform 0.5s;
+}
+
+.action-primary:hover { transform: translateY(-4px); box-shadow: 0 20px 40px var(--ombre); }
+.action-primary:hover::before { transform: scaleX(1); }
+
+.action-icon { font-family: 'Cinzel', serif; color: var(--or-fonce); font-size: 2rem; margin-bottom: 0.8rem; }
+.action-title { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--encre); margin-bottom: 0.3rem; font-weight: 500; }
+.action-desc { font-family: 'EB Garamond', serif; font-style: italic; color: var(--encre-claire); font-size: 0.95rem; }
+.landing-footer { margin-top: 3rem; font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--encre-claire); font-size: 0.95rem; }
+
+/* ============ MODAL ============ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(43, 36, 25, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  padding: 1rem;
+}
+
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+.modal {
+  background: var(--parchemin-clair);
+  border: 1px solid var(--or-fonce);
+  padding: 3rem 2.5rem;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+  transform: scale(0.95);
+  transition: transform 0.3s;
+  position: relative;
+}
+
+.modal-overlay.active .modal { transform: scale(1); }
+
+.modal::before, .modal::after { content: '❦'; position: absolute; color: var(--or-fonce); font-size: 1.2rem; }
+.modal::before { top: 1rem; left: 1rem; }
+.modal::after { bottom: 1rem; right: 1rem; transform: rotate(180deg); }
+
+.modal-label { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.3em; color: var(--or-fonce); text-align: center; margin-bottom: 1rem; }
+.modal-title { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--encre); text-align: center; margin-bottom: 0.5rem; font-weight: 400; line-height: 1.1; }
+.modal-title em { font-style: italic; color: var(--or-fonce); }
+.modal-subtitle { font-family: 'Cormorant Garamond', serif; font-style: italic; text-align: center; color: var(--encre-claire); margin-bottom: 2rem; font-size: 1rem; }
+
+.form-group { margin-bottom: 1.2rem; }
+
+.form-label {
+  display: block;
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--or-fonce);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.9rem 1.1rem;
+  background: var(--parchemin);
+  border: 1px solid rgba(166, 124, 58, 0.3);
+  font-family: 'EB Garamond', serif;
+  font-size: 1.05rem;
+  color: var(--encre);
+  transition: all 0.3s;
+}
+
+.form-input:focus { border-color: var(--or-fonce); background: #fff; }
+.form-input::placeholder { color: var(--beige); font-style: italic; }
+
+.code-input {
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.3em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.lang-choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+
+.lang-choice {
+  padding: 0.9rem 0.5rem;
+  background: var(--parchemin);
+  border: 1px solid rgba(166, 124, 58, 0.3);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.lang-choice:hover { background: var(--beige-clair); }
+
+.lang-choice.selected {
+  background: var(--parchemin-clair);
+  border-color: var(--or-fonce);
+  box-shadow: inset 0 0 0 1px var(--or-fonce);
+}
+
+.lang-choice-flag { font-size: 1.5rem; display: block; margin-bottom: 0.3rem; }
+.lang-choice-name { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--encre); }
+
+.modal-actions { display: flex; gap: 0.7rem; margin-top: 1.8rem; }
+
+.btn {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  padding: 1rem 1.5rem;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  border: 1px solid transparent;
+  flex: 1;
+}
+
+.btn-primary { background: var(--encre); color: var(--parchemin); border-color: var(--encre); }
+.btn-primary:hover { background: var(--or-fonce); border-color: var(--or-fonce); transform: translateY(-2px); box-shadow: 0 10px 20px var(--ombre); }
+.btn-outline { background: transparent; color: var(--encre); border-color: var(--or-fonce); }
+.btn-outline:hover { background: var(--or-fonce); color: var(--parchemin); }
+
+.room-code-display {
+  background: var(--parchemin);
+  border: 1px dashed var(--or-fonce);
+  padding: 2rem 1rem;
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.code-label { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.3em; color: var(--or-fonce); margin-bottom: 0.8rem; }
+.code-value { font-family: 'Cinzel', serif; font-size: 2rem; letter-spacing: 0.3em; color: var(--encre); font-weight: 600; cursor: pointer; transition: color 0.2s; }
+.code-value:hover { color: var(--or-fonce); }
+.code-hint { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 0.9rem; color: var(--encre-claire); margin-top: 0.8rem; }
+
+/* ============ SALLE ============ */
+.room-app {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100vh;
+  background: var(--parchemin);
+}
+
+.room-header {
+  background: var(--parchemin-clair);
+  border-bottom: 1px solid var(--or-clair);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+}
+
+.room-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--or-fonce), transparent);
+}
+
+.header-left { display: flex; align-items: center; gap: 1.2rem; }
+
+.btn-back {
+  background: transparent;
+  color: var(--or-fonce);
+  font-size: 1.3rem;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--or-fonce);
+}
+
+.btn-back:hover { background: var(--or-fonce); color: var(--parchemin); }
+
+.room-title-block h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 500; color: var(--encre); line-height: 1.1; }
+
+.room-meta-line {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  font-family: 'EB Garamond', serif;
+  font-size: 0.85rem;
+  color: var(--encre-claire);
+  margin-top: 0.2rem;
+  flex-wrap: wrap;
+}
+
+.code-badge {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  background: var(--beige-clair);
+  padding: 0.2rem 0.6rem;
+  color: var(--encre);
+  border: 1px solid var(--or-clair);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.code-badge:hover { background: var(--or-clair); color: var(--parchemin); }
+
+.header-right { display: flex; gap: 0.6rem; align-items: center; }
+
+.btn-header {
+  background: transparent;
+  border: 1px solid var(--or-fonce);
+  color: var(--encre);
+  padding: 0.55rem 1rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-header:hover { background: var(--or-fonce); color: var(--parchemin); }
+
+.room-body { display: grid; grid-template-columns: 1fr 280px; overflow: hidden; }
+
+.writing-zone { overflow-y: auto; padding: 2rem; position: relative; }
+
+.parchment {
+  max-width: 850px;
+  margin: 0 auto;
+  background: var(--parchemin-clair);
+  border: 1px solid rgba(166, 124, 58, 0.3);
+  padding: 3rem;
+  min-height: calc(100vh - 220px);
+  box-shadow: 0 10px 40px var(--ombre);
+  position: relative;
+}
+
+.parchment::before, .parchment::after { content: '❦'; position: absolute; color: var(--or-fonce); font-size: 1rem; opacity: 0.6; }
+.parchment::before { top: 1rem; left: 1rem; }
+.parchment::after { top: 1rem; right: 1rem; transform: rotate(90deg); }
+
+.doc-toolbar {
+  display: flex;
+  gap: 0.3rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(166, 124, 58, 0.3);
+  flex-wrap: wrap;
+}
+
+.tool-btn { width: 34px; height: 34px; background: transparent; color: var(--encre-claire); font-weight: 600; font-size: 0.9rem; transition: all 0.2s; }
+.tool-btn:hover { background: var(--beige-clair); color: var(--encre); }
+
+.doc-title {
+  width: 100%;
+  border: none;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: var(--encre);
+  background: transparent;
+  margin-bottom: 0.5rem;
+  line-height: 1.1;
+}
+
+.doc-title::placeholder { color: var(--beige); font-style: italic; }
+
+.doc-author-line { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--encre-claire); margin-bottom: 1.5rem; font-size: 1rem; }
+
+.doc-content {
+  width: 100%;
+  border: none;
+  font-family: 'EB Garamond', serif;
+  font-size: 1.15rem;
+  line-height: 1.9;
+  color: var(--encre);
+  resize: none;
+  min-height: 500px;
+  background: transparent;
+}
+
+.doc-content::placeholder { color: var(--beige); font-style: italic; }
+.doc-content.rtl, .doc-title.rtl { direction: rtl; text-align: right; font-family: 'Amiri', serif; }
+
+.room-side {
+  background: var(--parchemin-clair);
+  border-left: 1px solid var(--or-clair);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.side-section { padding: 1.2rem; border-bottom: 1px solid rgba(166, 124, 58, 0.3); }
+
+.side-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--or-fonce);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.side-count {
+  background: var(--beige-clair);
+  border: 1px solid var(--or-clair);
+  padding: 0.1rem 0.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--encre);
+}
+
+.participants-list { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.participant { display: flex; align-items: center; gap: 0.7rem; padding: 0.5rem; transition: background 0.2s; }
+.participant:hover { background: var(--beige-clair); }
+
+.p-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--or-clair), var(--or-fonce));
+  color: var(--parchemin);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  border: 2px solid transparent;
+}
+
+.p-avatar.you { background: linear-gradient(135deg, var(--encre-claire), var(--encre)); }
+
+.p-info { flex: 1; min-width: 0; }
+
+.p-name { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 500; color: var(--encre); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.p-name em { color: var(--or-fonce); font-size: 0.8em; }
+.p-state { font-size: 0.75rem; color: var(--encre-claire); font-family: 'EB Garamond', serif; }
+
+.empty-state { padding: 1.5rem 0.5rem; text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--encre-claire); font-size: 0.95rem; }
+
+.chat-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+.chat-scroll { flex: 1; overflow-y: auto; padding: 1rem 1.2rem; display: flex; flex-direction: column; gap: 0.9rem; }
+
+.chat-msg { display: flex; gap: 0.6rem; animation: slideIn 0.3s ease; }
+
+@keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.chat-msg-av {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--or-clair), var(--or-fonce));
+  color: var(--parchemin);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 0.65rem;
+  flex-shrink: 0;
+}
+
+.chat-msg-av.you { background: linear-gradient(135deg, var(--encre-claire), var(--encre)); }
+
+.chat-msg-body { flex: 1; min-width: 0; }
+.chat-msg-head { display: flex; gap: 0.5rem; align-items: baseline; margin-bottom: 0.15rem; }
+.chat-msg-name { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--or-fonce); }
+.chat-msg-time { font-size: 0.65rem; color: var(--beige); }
+.chat-msg-text { font-family: 'EB Garamond', serif; font-size: 0.9rem; color: var(--encre); word-wrap: break-word; }
+.chat-msg-text.rtl { direction: rtl; text-align: right; font-family: 'Amiri', serif; }
+
+.system-msg { text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--or-fonce); font-size: 0.8rem; padding: 0.3rem; }
+
+.chat-input-wrap { padding: 0.9rem 1.2rem; border-top: 1px solid rgba(166, 124, 58, 0.3); }
+
+.chat-input {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  background: var(--parchemin);
+  border: 1px solid rgba(166, 124, 58, 0.3);
+  font-family: 'EB Garamond', serif;
+  font-size: 0.9rem;
+  color: var(--encre);
+}
+
+.chat-input:focus { border-color: var(--or-fonce); }
+
+.audio-bar {
+  background: var(--parchemin-clair);
+  border-top: 1px solid var(--or-clair);
+  padding: 0.8rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+}
+
+.audio-bar::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--or-fonce), transparent);
+}
+
+.audio-controls { display: flex; gap: 0.5rem; }
+
+.a-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--parchemin);
+  border: 1px solid var(--or-clair);
+  color: var(--encre);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  transition: all 0.25s;
+}
+
+.a-btn:hover { background: var(--beige-clair); transform: scale(1.05); }
+.a-btn.active { background: var(--or-fonce); color: var(--parchemin); border-color: var(--or-fonce); }
+.a-btn.danger { background: var(--rouge-sceau); color: var(--parchemin); border-color: var(--rouge-sceau); }
+.a-btn.danger:hover { background: #a04030; }
+
+.audio-status {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 1rem;
+  background: var(--beige-clair);
+  border: 1px solid var(--or-clair);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--encre);
+}
+
+.wave { display: flex; gap: 2px; align-items: center; height: 14px; }
+.wave span { width: 2px; background: var(--or-fonce); border-radius: 1px; animation: wavey 1.2s infinite ease-in-out; }
+.wave span:nth-child(1) { animation-delay: 0s; height: 40%; }
+.wave span:nth-child(2) { animation-delay: 0.15s; height: 80%; }
+.wave span:nth-child(3) { animation-delay: 0.3s; height: 60%; }
+.wave span:nth-child(4) { animation-delay: 0.45s; height: 100%; }
+.wave span:nth-child(5) { animation-delay: 0.6s; height: 50%; }
+
+@keyframes wavey { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
+
+.audio-info { font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.15em; color: var(--encre-claire); display: flex; align-items: center; gap: 0.8rem; }
+
+.toast {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  background: var(--encre);
+  color: var(--parchemin);
+  padding: 1rem 1.3rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  z-index: 2000;
+  transform: translateX(450px);
+  transition: transform 0.4s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-left: 3px solid var(--or-fonce);
+}
+
+.toast.show { transform: translateX(0); }
+
+.loading-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--or-fonce);
+  animation: pulse 1.2s infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+@media (max-width: 900px) {
+  .room-body { grid-template-columns: 1fr; }
+  .room-side { display: none; }
+  .writing-zone { padding: 1rem; }
+  .parchment { padding: 1.5rem; }
+  .room-header { padding: 1rem; flex-wrap: wrap; }
+  .audio-bar { padding: 0.8rem 1rem; }
+  .audio-info { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- WARNING si Firebase pas configuré -->
+<div class="setup-warning hidden" id="setupWarning">
+  <div class="setup-box">
+    <h2>⚠ Configuration Firebase requise</h2>
+    <p>Pour que l'app fonctionne entre plusieurs personnes, il faut configurer Firebase (gratuit).</p>
+    <p>Ouvre ce fichier dans un éditeur de texte et remplace la configuration Firebase (cherche <code>firebaseConfig</code> tout en bas du fichier) par celle de ton projet Firebase.</p>
+    <p style="margin-top: 1.5rem;">Suis les instructions que l'IA t'a données pour créer ton projet Firebase en 5 minutes !</p>
+  </div>
+</div>
+
+<!-- LANDING -->
+<div class="landing" id="landing">
+  <div class="landing-container">
+    <div class="brand">WRITETOGETHER</div>
+    <h1 class="main-title">Écrivez<br><em>ensemble</em></h1>
+    <div class="divider"></div>
+    <p class="main-subtitle">
+      Créez une salle, partagez un code, et donnez vie<br>
+      à une même page, à plusieurs plumes
+    </p>
+
+    <div class="actions-wrap">
+      <div class="action-primary" onclick="openCreateModal()">
+        <div class="action-icon">✒</div>
+        <div class="action-title">Créer une salle</div>
+        <div class="action-desc">Obtenez un code à partager avec vos invités</div>
+      </div>
+
+      <div class="action-primary" onclick="openJoinModal()">
+        <div class="action-icon">❦</div>
+        <div class="action-title">Rejoindre une salle</div>
+        <div class="action-desc">Entrez un code pour écrire avec vos amis</div>
+      </div>
+    </div>
+
+    <p class="landing-footer">« Les mots partagés deviennent des mondes. »</p>
+  </div>
+</div>
+
+<!-- MODAL CRÉER -->
+<div class="modal-overlay" id="createModal">
+  <div class="modal">
+    <div class="modal-label">ÉTAPE I</div>
+    <h3 class="modal-title">Nouvelle <em>salle</em></h3>
+    <p class="modal-subtitle">Configurez votre atelier d'écriture partagé</p>
+
+    <div class="form-group">
+      <label class="form-label">Votre nom</label>
+      <input type="text" class="form-input" id="createName" placeholder="Comment vous appelez-vous ?">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Nom de la salle</label>
+      <input type="text" class="form-input" id="createRoomName" placeholder="Ex : Nouvelle du dimanche">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Langue de la salle</label>
+      <div class="lang-choices">
+        <div class="lang-choice selected" data-lang="fr" onclick="selectLang(this)">
+          <span class="lang-choice-flag">🇫🇷</span>
+          <span class="lang-choice-name">FRANÇAIS</span>
+        </div>
+        <div class="lang-choice" data-lang="en" onclick="selectLang(this)">
+          <span class="lang-choice-flag">🇬🇧</span>
+          <span class="lang-choice-name">ENGLISH</span>
+        </div>
+        <div class="lang-choice" data-lang="ar" onclick="selectLang(this)">
+          <span class="lang-choice-flag">🇲🇦</span>
+          <span class="lang-choice-name">العربية</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('createModal')">Annuler</button>
+      <button class="btn btn-primary" id="createBtn" onclick="createRoom()">Créer la salle</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL REJOINDRE -->
+<div class="modal-overlay" id="joinModal">
+  <div class="modal">
+    <div class="modal-label">ENTRER</div>
+    <h3 class="modal-title">Rejoindre une <em>salle</em></h3>
+    <p class="modal-subtitle">Entrez le code d'invitation reçu</p>
+
+    <div class="form-group">
+      <label class="form-label">Votre nom</label>
+      <input type="text" class="form-input" id="joinName" placeholder="Comment vous appelez-vous ?">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Code de la salle</label>
+      <input type="text" class="form-input code-input" id="joinCode" placeholder="WT-XXXXXX" maxlength="9">
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('joinModal')">Annuler</button>
+      <button class="btn btn-primary" id="joinBtn" onclick="joinRoom()">Rejoindre</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CODE -->
+<div class="modal-overlay" id="codeModal">
+  <div class="modal">
+    <div class="modal-label">SALLE CRÉÉE</div>
+    <h3 class="modal-title">Votre <em>code</em></h3>
+    <p class="modal-subtitle">Partagez ce code avec ceux que vous invitez</p>
+
+    <div class="room-code-display">
+      <div class="code-label">CODE D'INVITATION</div>
+      <div class="code-value" id="codeValue" onclick="copyDisplayedCode()">WT-XXXXXX</div>
+      <div class="code-hint">Cliquez sur le code pour le copier</div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="enterCreatedRoom()">Entrer dans la salle</button>
+    </div>
+  </div>
+</div>
+
+<!-- SALLE -->
+<div class="room-app hidden" id="roomApp">
+  <div class="room-header">
+    <div class="header-left">
+      <button class="btn-back" onclick="leaveRoom()" title="Quitter">←</button>
+      <div class="room-title-block">
+        <h2 id="roomTitle">Nom de la salle</h2>
+        <div class="room-meta-line">
+          <span id="roomLang">🇫🇷 Français</span>
+          <span>·</span>
+          <span class="code-badge" id="roomCode" onclick="copyCode()" title="Copier le code">WT-XXXXXX</span>
+        </div>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="btn-header" onclick="copyCode()">
+        <span>❦</span> Inviter
+      </button>
+    </div>
+  </div>
+
+  <div class="room-body">
+    <div class="writing-zone">
+      <div class="parchment">
+        <div class="doc-toolbar">
+          <button class="tool-btn" title="Gras"><b>B</b></button>
+          <button class="tool-btn" title="Italique"><i>I</i></button>
+          <button class="tool-btn" title="Souligné"><u>U</u></button>
+          <button class="tool-btn" title="Titre">H₁</button>
+          <button class="tool-btn" title="Sous-titre">H₂</button>
+          <button class="tool-btn" title="Citation">"</button>
+          <button class="tool-btn" title="Liste">•</button>
+        </div>
+        <input type="text" class="doc-title" id="docTitle" placeholder="Titre du manuscrit…">
+        <div class="doc-author-line" id="docAuthorLine">écrit par vous</div>
+        <textarea class="doc-content" id="docContent" placeholder="Commencez à écrire ici… Chaque mot ajouté sera visible par tous les participants de la salle."></textarea>
+      </div>
+    </div>
+
+    <aside class="room-side">
+      <div class="side-section">
+        <div class="side-title">
+          <span>Participants</span>
+          <span class="side-count" id="participantsCount">1</span>
+        </div>
+        <div class="participants-list" id="participantsList"></div>
+      </div>
+
+      <div class="chat-wrap">
+        <div class="side-section" style="border-bottom:none; padding-bottom:0.5rem;">
+          <div class="side-title"><span>Messages</span></div>
+        </div>
+        <div class="chat-scroll" id="chatScroll">
+          <div class="empty-state" id="emptyChat">Aucun message pour le moment.<br>Écrivez le premier.</div>
+        </div>
+        <div class="chat-input-wrap">
+          <input type="text" class="chat-input" id="chatInput" placeholder="Écrire un message…" onkeydown="if(event.key==='Enter')sendChat()">
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="audio-bar">
+    <div class="audio-controls">
+      <button class="a-btn active" id="micBtn" onclick="toggleMic()" title="Micro">🎤</button>
+      <button class="a-btn active" id="speakerBtn" onclick="toggleSpeaker()" title="Écouter">🔊</button>
+      <button class="a-btn" id="camBtn" onclick="toggleCam()" title="Caméra">📹</button>
+    </div>
+    <div class="audio-status">
+      <div class="wave"><span></span><span></span><span></span><span></span><span></span></div>
+      <span id="speakingStatus">Audio en direct</span>
+    </div>
+    <div class="audio-info">
+      <span id="timer">00:00</span>
+      <button class="a-btn danger" onclick="leaveRoom()" title="Quitter">✕</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toastIcon">❦</span><span id="toastMsg"></span></div>
+
+<!-- ============ FIREBASE (importation des librairies) ============ -->
+<script type="module">
+// ============================================================
+// 🔥 CONFIGURATION FIREBASE - À REMPLACER PAR LA TIENNE !
+// ============================================================
+// Va sur https://console.firebase.google.com
+// Crée un projet, active Realtime Database, et copie ta config ici
+// ============================================================
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBEb1BlCQeN53lz6Ywe2Ggehc_iHgkKSvI",
+  authDomain: "writetogether-21de8.firebaseapp.com",
+  databaseURL: "https://writetogether-21de8-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "writetogether-21de8",
+  storageBucket: "writetogether-21de8.firebasestorage.app",
+  messagingSenderId: "207137272292",
+  appId: "1:207137272292:web:bfa7ce9b13198b1da597f1"
+};
+
+// ============================================================
+// NE MODIFIE PAS LE CODE EN DESSOUS
+// ============================================================
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+  getDatabase, ref, set, get, onValue, off, update, remove, push,
+  onDisconnect, serverTimestamp, child
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// Vérifier si Firebase est configuré
+if (firebaseConfig.apiKey === "REMPLACE_PAR_TA_CLE") {
+  document.getElementById('setupWarning').classList.remove('hidden');
+} else {
+  try {
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    
+    // Rendre les fonctions Firebase disponibles globalement
+    window.firebaseDB = { db, ref, set, get, onValue, off, update, remove, push, onDisconnect, serverTimestamp, child };
+    window.firebaseReady = true;
+    console.log('✓ Firebase connecté');
+  } catch (err) {
+    console.error('Erreur Firebase:', err);
+    document.getElementById('setupWarning').classList.remove('hidden');
+  }
+}
+</script>
+
+<!-- ============ LOGIQUE DE L'APP ============ -->
+<script>
+// État
+let currentUser = null;
+let currentRoom = null;
+let selectedLang = 'fr';
+let sessionStart = null;
+let timerInterval = null;
+let pendingRoomCode = null;
+let micOn = true, speakerOn = true, camOn = false;
+let isTyping = false;
+let typingTimeout = null;
+
+// Listeners Firebase (pour les détacher au besoin)
+let roomListener = null;
+let participantsListener = null;
+let chatListener = null;
+let docListener = null;
+
+// ============ MODALES ============
+function openCreateModal() {
+  document.getElementById('createModal').classList.add('active');
+  setTimeout(() => document.getElementById('createName').focus(), 300);
+}
+
+function openJoinModal() {
+  document.getElementById('joinModal').classList.add('active');
+  setTimeout(() => document.getElementById('joinName').focus(), 300);
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('active');
+}
+
+function selectLang(el) {
+  document.querySelectorAll('#createModal .lang-choice').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedLang = el.dataset.lang;
+}
+
+// ============ CODES & IDs ============
+function generateCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = 'WT-';
+  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
+function generateUserId() {
+  return 'u_' + Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+}
+
+// ============ CRÉER SALLE ============
+async function createRoom() {
+  if (!window.firebaseReady) return showToast('Firebase non configuré', '⚠');
+  
+  const userName = document.getElementById('createName').value.trim();
+  const roomName = document.getElementById('createRoomName').value.trim();
+
+  if (!userName) return showToast('Entrez votre nom', '⚠');
+  if (!roomName) return showToast('Donnez un nom à la salle', '⚠');
+
+  const btn = document.getElementById('createBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-dot"></span>Création...';
+
+  try {
+    const code = generateCode();
+    const userId = generateUserId();
+    
+    const { db, ref, set } = window.firebaseDB;
+    
+    const room = {
+      code,
+      name: roomName,
+      lang: selectedLang,
+      createdBy: userName,
+      createdAt: Date.now(),
+      docTitle: '',
+      docContent: ''
+    };
+
+    // Créer la salle dans Firebase
+    await set(ref(db, 'rooms/' + code + '/info'), room);
+    await set(ref(db, 'rooms/' + code + '/participants/' + userId), {
+      name: userName,
+      joinedAt: Date.now(),
+      id: userId
+    });
+
+    currentUser = { name: userName, id: userId };
+    pendingRoomCode = code;
+
+    closeModal('createModal');
+    document.getElementById('createName').value = '';
+    document.getElementById('createRoomName').value = '';
+
+    document.getElementById('codeValue').textContent = code;
+    document.getElementById('codeModal').classList.add('active');
+  } catch (err) {
+    console.error(err);
+    showToast('Erreur : ' + err.message, '⚠');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Créer la salle';
+  }
+}
+
+function enterCreatedRoom() {
+  closeModal('codeModal');
+  enterRoom(pendingRoomCode);
+}
+
+// ============ REJOINDRE ============
+async function joinRoom() {
+  if (!window.firebaseReady) return showToast('Firebase non configuré', '⚠');
+  
+  const userName = document.getElementById('joinName').value.trim();
+  let code = document.getElementById('joinCode').value.trim().toUpperCase();
+
+  if (!userName) return showToast('Entrez votre nom', '⚠');
+  if (!code) return showToast('Entrez le code', '⚠');
+
+  if (!code.startsWith('WT-')) code = 'WT-' + code;
+
+  const btn = document.getElementById('joinBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-dot"></span>Recherche...';
+
+  try {
+    const { db, ref, get, set, push } = window.firebaseDB;
+    const snapshot = await get(ref(db, 'rooms/' + code + '/info'));
+    
+    if (!snapshot.exists()) {
+      showToast('Salle introuvable — vérifiez le code', '⚠');
+      btn.disabled = false;
+      btn.innerHTML = 'Rejoindre';
+      return;
+    }
+
+    const userId = generateUserId();
+    currentUser = { name: userName, id: userId };
+
+    // Ajouter participant
+    await set(ref(db, 'rooms/' + code + '/participants/' + userId), {
+      name: userName,
+      joinedAt: Date.now(),
+      id: userId
+    });
+
+    // Ajouter message système
+    await push(ref(db, 'rooms/' + code + '/chat'), {
+      type: 'system',
+      text: userName + ' a rejoint la salle',
+      time: Date.now()
+    });
+
+    closeModal('joinModal');
+    document.getElementById('joinName').value = '';
+    document.getElementById('joinCode').value = '';
+
+    enterRoom(code);
+  } catch (err) {
+    console.error(err);
+    showToast('Erreur : ' + err.message, '⚠');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Rejoindre';
+  }
+}
+
+// ============ ENTRER DANS SALLE ============
+async function enterRoom(code) {
+  if (!window.firebaseReady) return showToast('Firebase non configuré', '⚠');
+  
+  const { db, ref, get, onValue, onDisconnect, remove } = window.firebaseDB;
+  
+  try {
+    const snapshot = await get(ref(db, 'rooms/' + code + '/info'));
+    if (!snapshot.exists()) return showToast('Salle introuvable', '⚠');
+    
+    const info = snapshot.val();
+    currentRoom = { ...info, code };
+
+    document.getElementById('landing').classList.add('hidden');
+    document.getElementById('roomApp').classList.remove('hidden');
+
+    document.getElementById('roomTitle').textContent = info.name;
+    document.getElementById('roomCode').textContent = code;
+
+    const langNames = { fr: '🇫🇷 Français', en: '🇬🇧 English', ar: '🇲🇦 العربية' };
+    document.getElementById('roomLang').textContent = langNames[info.lang];
+    document.getElementById('docAuthorLine').textContent = 'salle créée par ' + info.createdBy;
+
+    const docEl = document.getElementById('docContent');
+    const titleEl = document.getElementById('docTitle');
+    const chatInput = document.getElementById('chatInput');
+
+    if (info.lang === 'ar') {
+      docEl.classList.add('rtl');
+      titleEl.classList.add('rtl');
+      docEl.placeholder = 'ابدأ الكتابة هنا... كل كلمة ستكون مرئية لجميع المشاركين.';
+      titleEl.placeholder = 'عنوان المخطوطة...';
+      chatInput.placeholder = 'اكتب رسالة...';
+    } else if (info.lang === 'en') {
+      docEl.classList.remove('rtl');
+      titleEl.classList.remove('rtl');
+      docEl.placeholder = 'Start writing here... every word will be visible to all participants.';
+      titleEl.placeholder = 'Manuscript title...';
+      chatInput.placeholder = 'Write a message...';
+    } else {
+      docEl.classList.remove('rtl');
+      titleEl.classList.remove('rtl');
+      docEl.placeholder = 'Commencez à écrire ici… Chaque mot ajouté sera visible par tous les participants.';
+      titleEl.placeholder = 'Titre du manuscrit…';
+      chatInput.placeholder = 'Écrire un message…';
+    }
+
+    docEl.value = info.docContent || '';
+    titleEl.value = info.docTitle || '';
+
+    // Listener : contenu du doc
+    docListener = ref(db, 'rooms/' + code + '/info');
+    onValue(docListener, (snap) => {
+      if (!snap.exists() || !currentRoom) return;
+      const val = snap.val();
+      if (!isTyping) {
+        if (docEl.value !== (val.docContent || '')) {
+          const pos = docEl.selectionStart;
+          docEl.value = val.docContent || '';
+          try { docEl.setSelectionRange(pos, pos); } catch(e) {}
+        }
+        if (titleEl.value !== (val.docTitle || '')) {
+          titleEl.value = val.docTitle || '';
+        }
+      }
+    });
+
+    // Listener : participants
+    participantsListener = ref(db, 'rooms/' + code + '/participants');
+    let oldParticipantsIds = [];
+    onValue(participantsListener, (snap) => {
+      const data = snap.val() || {};
+      const participants = Object.values(data);
+      renderParticipants(participants);
+
+      // Notification nouveau participant
+      const newIds = participants.map(p => p.id);
+      const joined = participants.find(p => !oldParticipantsIds.includes(p.id) && p.id !== currentUser?.id);
+      if (joined && oldParticipantsIds.length > 0) {
+        showToast(joined.name + ' a rejoint', '❦');
+      }
+      oldParticipantsIds = newIds;
+    });
+
+    // Listener : chat
+    chatListener = ref(db, 'rooms/' + code + '/chat');
+    onValue(chatListener, (snap) => {
+      const data = snap.val() || {};
+      const msgs = Object.values(data).sort((a, b) => a.time - b.time);
+      renderChat(msgs, info.lang);
+    });
+
+    // Déconnexion automatique : quand l'utilisateur ferme son onglet
+    // Firebase enlève son entrée dans participants
+    const myParticipantRef = ref(db, 'rooms/' + code + '/participants/' + currentUser.id);
+    onDisconnect(myParticipantRef).remove();
+
+    // Timer
+    sessionStart = Date.now();
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();
+  } catch (err) {
+    console.error(err);
+    showToast('Erreur : ' + err.message, '⚠');
+  }
+}
+
+// ============ ÉCRITURE ============
+async function onEdit() {
+  if (!currentRoom || !window.firebaseReady) return;
+  isTyping = true;
+  clearTimeout(typingTimeout);
+
+  const { db, ref, update } = window.firebaseDB;
+
+  try {
+    await update(ref(db, 'rooms/' + currentRoom.code + '/info'), {
+      docContent: document.getElementById('docContent').value,
+      docTitle: document.getElementById('docTitle').value
+    });
+  } catch(e) { console.error(e); }
+
+  typingTimeout = setTimeout(() => { isTyping = false; }, 500);
+}
+
+// ============ PARTICIPANTS ============
+function renderParticipants(participants) {
+  const list = document.getElementById('participantsList');
+  const count = participants.length;
+  document.getElementById('participantsCount').textContent = count;
+
+  if (count === 0) {
+    list.innerHTML = '<div class="empty-state">Personne dans la salle</div>';
+    return;
+  }
+
+  list.innerHTML = participants.map(p => {
+    const isYou = p.id === currentUser?.id;
+    const initials = p.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    return `
+      <div class="participant">
+        <div class="p-avatar ${isYou ? 'you' : ''}">${escapeHtml(initials)}</div>
+        <div class="p-info">
+          <div class="p-name">${escapeHtml(p.name)}${isYou ? ' <em>(vous)</em>' : ''}</div>
+          <div class="p-state">En ligne</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ============ CHAT ============
+function renderChat(msgs, lang) {
+  const scroll = document.getElementById('chatScroll');
+
+  if (!msgs || msgs.length === 0) {
+    scroll.innerHTML = '<div class="empty-state">Aucun message pour le moment.<br>Écrivez le premier.</div>';
+    return;
+  }
+
+  const rtl = lang === 'ar';
+
+  scroll.innerHTML = msgs.slice(-50).map(m => {
+    const t = new Date(m.time);
+    const time = String(t.getHours()).padStart(2,'0') + ':' + String(t.getMinutes()).padStart(2,'0');
+
+    if (m.type === 'system') {
+      return `<div class="system-msg">— ${escapeHtml(m.text)} —</div>`;
+    }
+
+    const isYou = m.userId === currentUser?.id;
+    const initials = (m.userName || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+
+    return `
+      <div class="chat-msg">
+        <div class="chat-msg-av ${isYou ? 'you' : ''}">${escapeHtml(initials)}</div>
+        <div class="chat-msg-body">
+          <div class="chat-msg-head">
+            <span class="chat-msg-name">${escapeHtml(m.userName || 'Anonyme')}${isYou ? ' (vous)' : ''}</span>
+            <span class="chat-msg-time">${time}</span>
+          </div>
+          <div class="chat-msg-text${rtl ? ' rtl' : ''}">${escapeHtml(m.text)}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  scroll.scrollTop = scroll.scrollHeight;
+}
+
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text || !currentRoom || !window.firebaseReady) return;
+
+  try {
+    const { db, ref, push } = window.firebaseDB;
+    await push(ref(db, 'rooms/' + currentRoom.code + '/chat'), {
+      type: 'message',
+      userId: currentUser.id,
+      userName: currentUser.name,
+      text,
+      time: Date.now()
+    });
+    input.value = '';
+  } catch(e) { console.error(e); }
+}
+
+// ============ AUDIO ============
+function toggleMic() {
+  micOn = !micOn;
+  const b = document.getElementById('micBtn');
+  b.classList.toggle('active', micOn);
+  b.textContent = micOn ? '🎤' : '🔇';
+  document.getElementById('speakingStatus').textContent = micOn ? 'Audio en direct' : 'Micro coupé';
+  showToast(micOn ? 'Micro activé' : 'Micro coupé', micOn ? '🎤' : '🔇');
+}
+
+function toggleSpeaker() {
+  speakerOn = !speakerOn;
+  const b = document.getElementById('speakerBtn');
+  b.classList.toggle('active', speakerOn);
+  b.textContent = speakerOn ? '🔊' : '🔈';
+  showToast(speakerOn ? 'Son activé' : 'Son coupé', '🔊');
+}
+
+function toggleCam() {
+  camOn = !camOn;
+  const b = document.getElementById('camBtn');
+  b.classList.toggle('active', camOn);
+  showToast(camOn ? 'Caméra activée' : 'Caméra désactivée', '📹');
+}
+
+// ============ TIMER ============
+function updateTimer() {
+  if (!sessionStart) return;
+  const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+  const m = Math.floor(elapsed / 60);
+  const s = elapsed % 60;
+  document.getElementById('timer').textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+
+// ============ COPIER ============
+function copyCode() {
+  if (!currentRoom) return;
+  copyToClipboard(currentRoom.code, 'Code copié : ' + currentRoom.code);
+}
+
+function copyDisplayedCode() {
+  const code = document.getElementById('codeValue').textContent;
+  copyToClipboard(code, 'Code copié !');
+}
+
+function copyToClipboard(text, successMsg) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(
+      () => showToast(successMsg, '❦'),
+      () => fallbackCopy(text, successMsg)
+    );
+  } else {
+    fallbackCopy(text, successMsg);
+  }
+}
+
+function fallbackCopy(text, successMsg) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.top = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); showToast(successMsg, '❦'); }
+  catch(e) { showToast('Code : ' + text, '❦'); }
+  document.body.removeChild(ta);
+}
+
+// ============ QUITTER ============
+async function leaveRoom() {
+  if (!currentRoom || !currentUser) {
+    document.getElementById('roomApp').classList.add('hidden');
+    document.getElementById('landing').classList.remove('hidden');
+    return;
+  }
+
+  const { db, ref, remove, push, off, get } = window.firebaseDB;
+  const code = currentRoom.code;
+  const userName = currentUser.name;
+
+  try {
+    // Détacher listeners
+    if (docListener) off(docListener);
+    if (participantsListener) off(participantsListener);
+    if (chatListener) off(chatListener);
+    docListener = participantsListener = chatListener = null;
+
+    // Retirer le participant
+    await remove(ref(db, 'rooms/' + code + '/participants/' + currentUser.id));
+    await push(ref(db, 'rooms/' + code + '/chat'), {
+      type: 'system',
+      text: userName + ' a quitté la salle',
+      time: Date.now()
+    });
+
+    // Si salle vide, la supprimer après 2 secondes
+    setTimeout(async () => {
+      try {
+        const snap = await get(ref(db, 'rooms/' + code + '/participants'));
+        if (!snap.exists() || Object.keys(snap.val() || {}).length === 0) {
+          await remove(ref(db, 'rooms/' + code));
+        }
+      } catch(e) {}
+    }, 2000);
+  } catch(e) { console.error(e); }
+
+  if (timerInterval) clearInterval(timerInterval);
+  sessionStart = null;
+  currentRoom = null;
+  currentUser = null;
+
+  document.getElementById('roomApp').classList.add('hidden');
+  document.getElementById('landing').classList.remove('hidden');
+}
+
+// ============ TOAST ============
+let toastTimeout;
+function showToast(msg, icon = '❦') {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastMsg').textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ============ UTILS ============
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>"']/g, m => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[m]));
+}
+
+// Rendre les fonctions accessibles globalement
+window.openCreateModal = openCreateModal;
+window.openJoinModal = openJoinModal;
+window.closeModal = closeModal;
+window.selectLang = selectLang;
+window.createRoom = createRoom;
+window.joinRoom = joinRoom;
+window.enterCreatedRoom = enterCreatedRoom;
+window.leaveRoom = leaveRoom;
+window.copyCode = copyCode;
+window.copyDisplayedCode = copyDisplayedCode;
+window.toggleMic = toggleMic;
+window.toggleSpeaker = toggleSpeaker;
+window.toggleCam = toggleCam;
+window.sendChat = sendChat;
+
+// ============ INIT ============
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('docContent').addEventListener('input', onEdit);
+  document.getElementById('docTitle').addEventListener('input', onEdit);
+
+  document.getElementById('createName').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('createRoomName').focus();
+  });
+  document.getElementById('createRoomName').addEventListener('keydown', e => {
+    if (e.key === 'Enter') createRoom();
+  });
+  document.getElementById('joinName').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('joinCode').focus();
+  });
+  document.getElementById('joinCode').addEventListener('keydown', e => {
+    if (e.key === 'Enter') joinRoom();
+  });
+
+  document.querySelectorAll('.modal-overlay').forEach(o => {
+    if (o.id === 'codeModal') return;
+    o.addEventListener('click', e => {
+      if (e.target === o) o.classList.remove('active');
+    });
+  });
+
+  document.getElementById('joinCode').addEventListener('input', e => {
+    let v = e.target.value.toUpperCase().replace(/[^A-Z0-9-]/g, '');
+    if (v.length > 0 && !v.startsWith('W')) v = 'WT-' + v;
+    else if (v.startsWith('WT') && !v.startsWith('WT-') && v.length > 2) v = 'WT-' + v.slice(2);
+    if (v.length > 9) v = v.slice(0, 9);
+    e.target.value = v;
+  });
+});
+</script>
+
+</body>
+</html>
