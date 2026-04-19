@@ -17,6 +17,7 @@
   --encre: #2b2419;
   --encre-claire: #4a3f2f;
   --rouge-sceau: #8b3a2f;
+  --vert-jitsi: #2e7d5b;
   --ombre: rgba(43, 36, 25, 0.15);
   --beige: #c9b68a;
 }
@@ -50,7 +51,7 @@ button { font-family: inherit; cursor: pointer; border: none; transition: all 0.
 input, textarea { font-family: inherit; outline: none; }
 .hidden { display: none !important; }
 
-/* ============ SETUP WARNING (si Firebase pas configuré) ============ */
+/* SETUP WARNING */
 .setup-warning {
   position: fixed;
   inset: 0;
@@ -63,58 +64,32 @@ input, textarea { font-family: inherit; outline: none; }
 }
 
 .setup-box {
-  max-width: 600px;
+  max-width: 560px;
   background: var(--parchemin-clair);
   border: 1px solid var(--or-fonce);
-  padding: 3rem;
-  text-align: center;
-}
-
-.setup-box h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: var(--encre);
-}
-
-.setup-box p {
-  font-family: 'EB Garamond', serif;
-  color: var(--encre-claire);
-  margin-bottom: 1rem;
-  line-height: 1.7;
-}
-
-.setup-box code {
-  display: block;
-  background: var(--parchemin);
-  padding: 1rem;
-  border: 1px dashed var(--or-fonce);
-  font-family: monospace;
-  font-size: 0.85rem;
-  color: var(--encre);
-  margin: 1rem 0;
-  text-align: left;
-  overflow-x: auto;
-  white-space: pre;
-}
-
-/* ============ LANDING ============ */
-.landing {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  position: relative;
-}
-
-.landing-container {
-  max-width: 520px;
-  width: 100%;
+  padding: 3.5rem 3rem;
   text-align: center;
   position: relative;
-  z-index: 2;
+  box-shadow: 0 20px 60px var(--ombre);
 }
+
+.setup-box::before, .setup-box::after {
+  content: '❦';
+  position: absolute;
+  color: var(--or-fonce);
+  font-size: 1.2rem;
+}
+.setup-box::before { top: 1rem; left: 1rem; }
+.setup-box::after { bottom: 1rem; right: 1rem; transform: rotate(180deg); }
+
+.setup-icon { font-size: 3rem; color: var(--or-fonce); margin-bottom: 1rem; line-height: 1; }
+.setup-box h2 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; margin-bottom: 1.5rem; color: var(--encre); font-weight: 400; }
+.setup-desc { font-family: 'EB Garamond', serif; color: var(--encre-claire); margin-bottom: 1rem; line-height: 1.7; font-size: 1.05rem; }
+.setup-box code { background: var(--beige-clair); padding: 0.1rem 0.4rem; border-radius: 3px; font-family: monospace; font-size: 0.9em; color: var(--encre); }
+
+/* LANDING */
+.landing { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; position: relative; }
+.landing-container { max-width: 520px; width: 100%; text-align: center; position: relative; z-index: 2; }
 
 .brand {
   font-family: 'Cinzel', serif;
@@ -124,7 +99,6 @@ input, textarea { font-family: inherit; outline: none; }
   color: var(--or-fonce);
   margin-bottom: 1.5rem;
 }
-
 .brand::before, .brand::after { content: '❦'; margin: 0 0.8rem; opacity: 0.7; }
 
 h1.main-title {
@@ -135,7 +109,6 @@ h1.main-title {
   color: var(--encre);
   margin-bottom: 1rem;
 }
-
 h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400; }
 
 .divider {
@@ -145,12 +118,10 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
   margin: 1.5rem auto;
   position: relative;
 }
-
 .divider::before {
   content: '◈';
   position: absolute;
-  left: 50%;
-  top: 50%;
+  left: 50%; top: 50%;
   transform: translate(-50%, -50%);
   background: var(--parchemin);
   padding: 0 0.8rem;
@@ -166,12 +137,7 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
   margin-bottom: 3rem;
 }
 
-.actions-wrap {
-  display: grid;
-  gap: 1rem;
-  max-width: 400px;
-  margin: 0 auto;
-}
+.actions-wrap { display: grid; gap: 1rem; max-width: 400px; margin: 0 auto; }
 
 .action-primary {
   background: linear-gradient(135deg, var(--parchemin-clair), var(--beige-clair));
@@ -201,7 +167,7 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
 .action-desc { font-family: 'EB Garamond', serif; font-style: italic; color: var(--encre-claire); font-size: 0.95rem; }
 .landing-footer { margin-top: 3rem; font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--encre-claire); font-size: 0.95rem; }
 
-/* ============ MODAL ============ */
+/* MODALS */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -216,7 +182,6 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
   transition: opacity 0.3s;
   padding: 1rem;
 }
-
 .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
 .modal {
@@ -287,15 +252,12 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
   text-align: center;
   transition: all 0.2s;
 }
-
 .lang-choice:hover { background: var(--beige-clair); }
-
 .lang-choice.selected {
   background: var(--parchemin-clair);
   border-color: var(--or-fonce);
   box-shadow: inset 0 0 0 1px var(--or-fonce);
 }
-
 .lang-choice-flag { font-size: 1.5rem; display: block; margin-bottom: 0.3rem; }
 .lang-choice-name { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--encre); }
 
@@ -317,6 +279,8 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
 .btn-primary:hover { background: var(--or-fonce); border-color: var(--or-fonce); transform: translateY(-2px); box-shadow: 0 10px 20px var(--ombre); }
 .btn-outline { background: transparent; color: var(--encre); border-color: var(--or-fonce); }
 .btn-outline:hover { background: var(--or-fonce); color: var(--parchemin); }
+.btn-danger { background: var(--rouge-sceau); color: var(--parchemin); border-color: var(--rouge-sceau); }
+.btn-danger:hover { background: #a04030; border-color: #a04030; }
 
 .room-code-display {
   background: var(--parchemin);
@@ -331,10 +295,10 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
 .code-value:hover { color: var(--or-fonce); }
 .code-hint { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 0.9rem; color: var(--encre-claire); margin-top: 0.8rem; }
 
-/* ============ SALLE ============ */
+/* SALLE */
 .room-app {
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr;
   height: 100vh;
   background: var(--parchemin);
 }
@@ -348,6 +312,7 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
   align-items: center;
   gap: 1rem;
   position: relative;
+  flex-wrap: wrap;
 }
 
 .room-header::after {
@@ -371,7 +336,6 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
   justify-content: center;
   border: 1px solid var(--or-fonce);
 }
-
 .btn-back:hover { background: var(--or-fonce); color: var(--parchemin); }
 
 .room-title-block h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 500; color: var(--encre); line-height: 1.1; }
@@ -398,10 +362,9 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
   cursor: pointer;
   transition: all 0.2s;
 }
-
 .code-badge:hover { background: var(--or-clair); color: var(--parchemin); }
 
-.header-right { display: flex; gap: 0.6rem; align-items: center; }
+.header-right { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
 
 .btn-header {
   background: transparent;
@@ -414,11 +377,18 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  cursor: pointer;
 }
-
 .btn-header:hover { background: var(--or-fonce); color: var(--parchemin); }
 
-.room-body { display: grid; grid-template-columns: 1fr 280px; overflow: hidden; }
+.btn-jitsi {
+  background: var(--vert-jitsi);
+  border: 1px solid var(--vert-jitsi);
+  color: var(--parchemin);
+}
+.btn-jitsi:hover { background: #1f5a40; border-color: #1f5a40; color: var(--parchemin); }
+
+.room-body { display: grid; grid-template-columns: 1fr 300px; overflow: hidden; }
 
 .writing-zone { overflow-y: auto; padding: 2rem; position: relative; }
 
@@ -428,7 +398,7 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
   background: var(--parchemin-clair);
   border: 1px solid rgba(166, 124, 58, 0.3);
   padding: 3rem;
-  min-height: calc(100vh - 220px);
+  min-height: calc(100vh - 180px);
   box-shadow: 0 10px 40px var(--ombre);
   position: relative;
 }
@@ -437,17 +407,45 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
 .parchment::before { top: 1rem; left: 1rem; }
 .parchment::after { top: 1rem; right: 1rem; transform: rotate(90deg); }
 
-.doc-toolbar {
-  display: flex;
-  gap: 0.3rem;
-  padding-bottom: 1rem;
+.my-page-label {
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--or-fonce);
   margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid rgba(166, 124, 58, 0.3);
+}
+
+.doc-actions-top {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
   flex-wrap: wrap;
 }
 
-.tool-btn { width: 34px; height: 34px; background: transparent; color: var(--encre-claire); font-weight: 600; font-size: 0.9rem; transition: all 0.2s; }
-.tool-btn:hover { background: var(--beige-clair); color: var(--encre); }
+.btn-doc {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  padding: 0.5rem 0.9rem;
+  background: transparent;
+  color: var(--encre-claire);
+  border: 1px solid var(--or-clair);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-doc:hover {
+  background: var(--or-fonce);
+  color: var(--parchemin);
+  border-color: var(--or-fonce);
+}
 
 .doc-title {
   width: 100%;
@@ -460,7 +458,6 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
   margin-bottom: 0.5rem;
   line-height: 1.1;
 }
-
 .doc-title::placeholder { color: var(--beige); font-style: italic; }
 
 .doc-author-line { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--encre-claire); margin-bottom: 1.5rem; font-size: 1rem; }
@@ -476,10 +473,32 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
   min-height: 500px;
   background: transparent;
 }
-
 .doc-content::placeholder { color: var(--beige); font-style: italic; }
 .doc-content.rtl, .doc-title.rtl { direction: rtl; text-align: right; font-family: 'Amiri', serif; }
 
+.word-count-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(166, 124, 58, 0.3);
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--or-fonce);
+}
+
+.save-status {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--encre-claire);
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* Sidebar de droite */
 .room-side {
   background: var(--parchemin-clair);
   border-left: 1px solid var(--or-clair);
@@ -529,13 +548,10 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
   font-weight: 600;
   font-size: 0.85rem;
   flex-shrink: 0;
-  border: 2px solid transparent;
 }
-
 .p-avatar.you { background: linear-gradient(135deg, var(--encre-claire), var(--encre)); }
 
 .p-info { flex: 1; min-width: 0; }
-
 .p-name { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 500; color: var(--encre); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .p-name em { color: var(--or-fonce); font-size: 0.8em; }
 .p-state { font-size: 0.75rem; color: var(--encre-claire); font-family: 'EB Garamond', serif; }
@@ -543,7 +559,6 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
 .empty-state { padding: 1.5rem 0.5rem; text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--encre-claire); font-size: 0.95rem; }
 
 .chat-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-
 .chat-scroll { flex: 1; overflow-y: auto; padding: 1rem 1.2rem; display: flex; flex-direction: column; gap: 0.9rem; }
 
 .chat-msg { display: flex; gap: 0.6rem; animation: slideIn 0.3s ease; }
@@ -551,20 +566,14 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
 @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 .chat-msg-av {
-  width: 26px;
-  height: 26px;
+  width: 26px; height: 26px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--or-clair), var(--or-fonce));
   color: var(--parchemin);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Cinzel', serif;
-  font-weight: 600;
-  font-size: 0.65rem;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cinzel', serif; font-weight: 600; font-size: 0.65rem;
   flex-shrink: 0;
 }
-
 .chat-msg-av.you { background: linear-gradient(135deg, var(--encre-claire), var(--encre)); }
 
 .chat-msg-body { flex: 1; min-width: 0; }
@@ -587,74 +596,29 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
   font-size: 0.9rem;
   color: var(--encre);
 }
-
 .chat-input:focus { border-color: var(--or-fonce); }
 
-.audio-bar {
-  background: var(--parchemin-clair);
-  border-top: 1px solid var(--or-clair);
-  padding: 0.8rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  position: relative;
+/* JITSI MODAL */
+.jitsi-info-modal {
+  padding: 2rem 1rem;
+  text-align: center;
 }
 
-.audio-bar::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(to right, transparent, var(--or-fonce), transparent);
-}
-
-.audio-controls { display: flex; gap: 0.5rem; }
-
-.a-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
+.jitsi-url-box {
   background: var(--parchemin);
-  border: 1px solid var(--or-clair);
+  border: 1px dashed var(--vert-jitsi);
+  padding: 1.2rem 1rem;
+  margin: 1rem 0;
+  font-family: monospace;
+  font-size: 0.85rem;
+  word-break: break-all;
   color: var(--encre);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.05rem;
-  transition: all 0.25s;
+  cursor: pointer;
 }
 
-.a-btn:hover { background: var(--beige-clair); transform: scale(1.05); }
-.a-btn.active { background: var(--or-fonce); color: var(--parchemin); border-color: var(--or-fonce); }
-.a-btn.danger { background: var(--rouge-sceau); color: var(--parchemin); border-color: var(--rouge-sceau); }
-.a-btn.danger:hover { background: #a04030; }
+.jitsi-url-box:hover { background: var(--beige-clair); }
 
-.audio-status {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.4rem 1rem;
-  background: var(--beige-clair);
-  border: 1px solid var(--or-clair);
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 0.9rem;
-  color: var(--encre);
-}
-
-.wave { display: flex; gap: 2px; align-items: center; height: 14px; }
-.wave span { width: 2px; background: var(--or-fonce); border-radius: 1px; animation: wavey 1.2s infinite ease-in-out; }
-.wave span:nth-child(1) { animation-delay: 0s; height: 40%; }
-.wave span:nth-child(2) { animation-delay: 0.15s; height: 80%; }
-.wave span:nth-child(3) { animation-delay: 0.3s; height: 60%; }
-.wave span:nth-child(4) { animation-delay: 0.45s; height: 100%; }
-.wave span:nth-child(5) { animation-delay: 0.6s; height: 50%; }
-
-@keyframes wavey { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
-
-.audio-info { font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.15em; color: var(--encre-claire); display: flex; align-items: center; gap: 0.8rem; }
-
+/* TOAST */
 .toast {
   position: fixed;
   top: 2rem;
@@ -673,19 +637,16 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
   gap: 0.6rem;
   border-left: 3px solid var(--or-fonce);
 }
-
 .toast.show { transform: translateX(0); }
 
 .loading-dot {
   display: inline-block;
-  width: 10px;
-  height: 10px;
+  width: 10px; height: 10px;
   border-radius: 50%;
   background: var(--or-fonce);
   animation: pulse 1.2s infinite;
   margin-right: 0.5rem;
 }
-
 @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
 @media (max-width: 900px) {
@@ -693,21 +654,20 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
   .room-side { display: none; }
   .writing-zone { padding: 1rem; }
   .parchment { padding: 1.5rem; }
-  .room-header { padding: 1rem; flex-wrap: wrap; }
-  .audio-bar { padding: 0.8rem 1rem; }
-  .audio-info { display: none; }
+  .room-header { padding: 1rem; }
+  .btn-header { font-size: 0.65rem; padding: 0.5rem 0.8rem; }
 }
 </style>
 </head>
 <body>
 
-<!-- WARNING si Firebase pas configuré -->
+<!-- WARNING -->
 <div class="setup-warning hidden" id="setupWarning">
   <div class="setup-box">
-    <h2>⚠ Configuration Firebase requise</h2>
-    <p>Pour que l'app fonctionne entre plusieurs personnes, il faut configurer Firebase (gratuit).</p>
-    <p>Ouvre ce fichier dans un éditeur de texte et remplace la configuration Firebase (cherche <code>firebaseConfig</code> tout en bas du fichier) par celle de ton projet Firebase.</p>
-    <p style="margin-top: 1.5rem;">Suis les instructions que l'IA t'a données pour créer ton projet Firebase en 5 minutes !</p>
+    <div class="setup-icon">⚠</div>
+    <h2>Firebase non accessible</h2>
+    <p class="setup-desc">Le site doit être en ligne (HTTPS) pour fonctionner, pas en local (<code>file:///</code>).</p>
+    <p class="setup-desc">Uploade ce fichier sur GitHub Pages pour que tout marche.</p>
   </div>
 </div>
 
@@ -718,8 +678,8 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
     <h1 class="main-title">Écrivez<br><em>ensemble</em></h1>
     <div class="divider"></div>
     <p class="main-subtitle">
-      Créez une salle, partagez un code, et donnez vie<br>
-      à une même page, à plusieurs plumes
+      Chacun sa feuille, un même salon<br>
+      Écrivez côte à côte, parlez si vous voulez
     </p>
 
     <div class="actions-wrap">
@@ -825,11 +785,58 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
   </div>
 </div>
 
+<!-- MODAL AVANT QUITTER (confirmer sauvegarde) -->
+<div class="modal-overlay" id="leaveModal">
+  <div class="modal">
+    <div class="modal-label">AVANT DE QUITTER</div>
+    <h3 class="modal-title">Sauvegardez votre <em>texte</em></h3>
+    <p class="modal-subtitle">N'oubliez pas d'enregistrer ce que vous avez écrit avant de partir</p>
+
+    <div style="display:flex; flex-direction:column; gap:0.6rem; margin-bottom:1.5rem;">
+      <button class="btn btn-primary" onclick="downloadDocFromLeave()">
+        📥 Télécharger mon texte (.txt)
+      </button>
+      <button class="btn btn-outline" onclick="copyDocFromLeave()">
+        📋 Copier mon texte
+      </button>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('leaveModal')">Rester</button>
+      <button class="btn btn-danger" onclick="confirmLeave()">Quitter quand même</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL JITSI -->
+<div class="modal-overlay" id="jitsiModal">
+  <div class="modal">
+    <div class="modal-label">APPEL VOCAL & VIDÉO</div>
+    <h3 class="modal-title">Parler avec la <em>salle</em></h3>
+    <p class="modal-subtitle">Tous les participants utilisent le même lien Jitsi<br>pour se retrouver en audio/vidéo</p>
+
+    <div class="jitsi-info-modal">
+      <p style="font-family:'EB Garamond',serif; color:var(--encre-claire); margin-bottom:0.5rem;">Lien de l'appel :</p>
+      <div class="jitsi-url-box" id="jitsiUrl" onclick="copyJitsiUrl()">
+        chargement...
+      </div>
+      <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.85rem; color:var(--encre-claire); margin-top:1rem;">
+        Cliquez pour copier, ou ouvrez directement ci-dessous
+      </p>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('jitsiModal')">Fermer</button>
+      <button class="btn btn-primary" onclick="openJitsi()">🎤 Rejoindre l'appel</button>
+    </div>
+  </div>
+</div>
+
 <!-- SALLE -->
 <div class="room-app hidden" id="roomApp">
   <div class="room-header">
     <div class="header-left">
-      <button class="btn-back" onclick="leaveRoom()" title="Quitter">←</button>
+      <button class="btn-back" onclick="tryLeaveRoom()" title="Quitter">←</button>
       <div class="room-title-block">
         <h2 id="roomTitle">Nom de la salle</h2>
         <div class="room-meta-line">
@@ -840,27 +847,36 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
       </div>
     </div>
     <div class="header-right">
-      <button class="btn-header" onclick="copyCode()">
-        <span>❦</span> Inviter
-      </button>
+      <button class="btn-header" onclick="copyCode()"><span>❦</span> Inviter</button>
+      <button class="btn-header btn-jitsi" onclick="showJitsiModal()"><span>🎤</span> Appel audio/vidéo</button>
     </div>
   </div>
 
   <div class="room-body">
     <div class="writing-zone">
       <div class="parchment">
-        <div class="doc-toolbar">
-          <button class="tool-btn" title="Gras"><b>B</b></button>
-          <button class="tool-btn" title="Italique"><i>I</i></button>
-          <button class="tool-btn" title="Souligné"><u>U</u></button>
-          <button class="tool-btn" title="Titre">H₁</button>
-          <button class="tool-btn" title="Sous-titre">H₂</button>
-          <button class="tool-btn" title="Citation">"</button>
-          <button class="tool-btn" title="Liste">•</button>
+        <div class="my-page-label" id="myPageLabel">VOTRE PAGE PERSONNELLE</div>
+
+        <div class="doc-actions-top">
+          <button class="btn-doc" onclick="downloadDoc()" title="Télécharger en .txt">
+            <span>📥</span> Télécharger
+          </button>
+          <button class="btn-doc" onclick="copyDoc()" title="Copier tout">
+            <span>📋</span> Copier
+          </button>
+          <button class="btn-doc" onclick="clearDoc()" title="Effacer">
+            <span>🗑</span> Effacer
+          </button>
         </div>
+
         <input type="text" class="doc-title" id="docTitle" placeholder="Titre du manuscrit…">
         <div class="doc-author-line" id="docAuthorLine">écrit par vous</div>
-        <textarea class="doc-content" id="docContent" placeholder="Commencez à écrire ici… Chaque mot ajouté sera visible par tous les participants de la salle."></textarea>
+        <textarea class="doc-content" id="docContent" placeholder="Commencez à écrire ici…&#10;&#10;C'est votre page personnelle — personne ne peut la voir.&#10;Téléchargez-la avant de partir pour garder ce que vous avez écrit."></textarea>
+
+        <div class="word-count-bar">
+          <span id="wordCount">0 MOTS</span>
+          <span class="save-status" id="saveStatus">Sauvegardé automatiquement</span>
+        </div>
       </div>
     </div>
 
@@ -886,35 +902,12 @@ h1.main-title em { font-style: italic; color: var(--or-fonce); font-weight: 400;
       </div>
     </aside>
   </div>
-
-  <div class="audio-bar">
-    <div class="audio-controls">
-      <button class="a-btn active" id="micBtn" onclick="toggleMic()" title="Micro">🎤</button>
-      <button class="a-btn active" id="speakerBtn" onclick="toggleSpeaker()" title="Écouter">🔊</button>
-      <button class="a-btn" id="camBtn" onclick="toggleCam()" title="Caméra">📹</button>
-    </div>
-    <div class="audio-status">
-      <div class="wave"><span></span><span></span><span></span><span></span><span></span></div>
-      <span id="speakingStatus">Audio en direct</span>
-    </div>
-    <div class="audio-info">
-      <span id="timer">00:00</span>
-      <button class="a-btn danger" onclick="leaveRoom()" title="Quitter">✕</button>
-    </div>
-  </div>
 </div>
 
 <div class="toast" id="toast"><span id="toastIcon">❦</span><span id="toastMsg"></span></div>
 
-<!-- ============ FIREBASE (importation des librairies) ============ -->
+<!-- FIREBASE -->
 <script type="module">
-// ============================================================
-// 🔥 CONFIGURATION FIREBASE - À REMPLACER PAR LA TIENNE !
-// ============================================================
-// Va sur https://console.firebase.google.com
-// Crée un projet, active Realtime Database, et copie ta config ici
-// ============================================================
-
 const firebaseConfig = {
   apiKey: "AIzaSyBEb1BlCQeN53lz6Ywe2Ggehc_iHgkKSvI",
   authDomain: "writetogether-21de8.firebaseapp.com",
@@ -925,53 +918,65 @@ const firebaseConfig = {
   appId: "1:207137272292:web:bfa7ce9b13198b1da597f1"
 };
 
-// ============================================================
-// NE MODIFIE PAS LE CODE EN DESSOUS
-// ============================================================
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { 
-  getDatabase, ref, set, get, onValue, off, update, remove, push,
-  onDisconnect, serverTimestamp, child
+  getDatabase, ref, set, get, onValue, off, update, remove, push, onDisconnect
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// Vérifier si Firebase est configuré
-if (firebaseConfig.apiKey === "REMPLACE_PAR_TA_CLE") {
+try {
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  window.firebaseDB = { db, ref, set, get, onValue, off, update, remove, push, onDisconnect };
+  window.firebaseReady = true;
+  console.log('✓ Firebase connecté');
+} catch (err) {
+  console.error('Erreur Firebase:', err);
   document.getElementById('setupWarning').classList.remove('hidden');
-} else {
-  try {
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    
-    // Rendre les fonctions Firebase disponibles globalement
-    window.firebaseDB = { db, ref, set, get, onValue, off, update, remove, push, onDisconnect, serverTimestamp, child };
-    window.firebaseReady = true;
-    console.log('✓ Firebase connecté');
-  } catch (err) {
-    console.error('Erreur Firebase:', err);
-    document.getElementById('setupWarning').classList.remove('hidden');
-  }
 }
 </script>
 
-<!-- ============ LOGIQUE DE L'APP ============ -->
 <script>
-// État
+// ============ ÉTAT ============
 let currentUser = null;
 let currentRoom = null;
 let selectedLang = 'fr';
-let sessionStart = null;
-let timerInterval = null;
-let pendingRoomCode = null;
-let micOn = true, speakerOn = true, camOn = false;
-let isTyping = false;
-let typingTimeout = null;
-
-// Listeners Firebase (pour les détacher au besoin)
-let roomListener = null;
 let participantsListener = null;
 let chatListener = null;
-let docListener = null;
+let saveTimeout = null;
+
+// ============ STOCKAGE LOCAL (document personnel) ============
+function localDocKey(roomCode, userId) {
+  return 'wt_doc_' + roomCode + '_' + userId;
+}
+
+function saveLocalDoc() {
+  if (!currentRoom || !currentUser) return;
+  const data = {
+    title: document.getElementById('docTitle').value,
+    content: document.getElementById('docContent').value,
+    lastSaved: Date.now()
+  };
+  try {
+    localStorage.setItem(localDocKey(currentRoom.code, currentUser.id), JSON.stringify(data));
+    document.getElementById('saveStatus').textContent = '✓ Sauvegardé localement';
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+function loadLocalDoc() {
+  if (!currentRoom || !currentUser) return;
+  try {
+    const raw = localStorage.getItem(localDocKey(currentRoom.code, currentUser.id));
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    if (data.title) document.getElementById('docTitle').value = data.title;
+    if (data.content) document.getElementById('docContent').value = data.content;
+    updateWordCount();
+  } catch(e) {
+    console.error(e);
+  }
+}
 
 // ============ MODALES ============
 function openCreateModal() {
@@ -1023,29 +1028,20 @@ async function createRoom() {
   try {
     const code = generateCode();
     const userId = generateUserId();
-    
     const { db, ref, set } = window.firebaseDB;
     
-    const room = {
-      code,
-      name: roomName,
-      lang: selectedLang,
-      createdBy: userName,
-      createdAt: Date.now(),
-      docTitle: '',
-      docContent: ''
+    const roomInfo = {
+      code, name: roomName, lang: selectedLang,
+      createdBy: userName, createdAt: Date.now()
     };
 
-    // Créer la salle dans Firebase
-    await set(ref(db, 'rooms/' + code + '/info'), room);
+    await set(ref(db, 'rooms/' + code + '/info'), roomInfo);
     await set(ref(db, 'rooms/' + code + '/participants/' + userId), {
-      name: userName,
-      joinedAt: Date.now(),
-      id: userId
+      name: userName, joinedAt: Date.now(), id: userId
     });
 
     currentUser = { name: userName, id: userId };
-    pendingRoomCode = code;
+    window.pendingRoomCode = code;
 
     closeModal('createModal');
     document.getElementById('createName').value = '';
@@ -1064,7 +1060,7 @@ async function createRoom() {
 
 function enterCreatedRoom() {
   closeModal('codeModal');
-  enterRoom(pendingRoomCode);
+  enterRoom(window.pendingRoomCode);
 }
 
 // ============ REJOINDRE ============
@@ -1076,7 +1072,6 @@ async function joinRoom() {
 
   if (!userName) return showToast('Entrez votre nom', '⚠');
   if (!code) return showToast('Entrez le code', '⚠');
-
   if (!code.startsWith('WT-')) code = 'WT-' + code;
 
   const btn = document.getElementById('joinBtn');
@@ -1088,7 +1083,7 @@ async function joinRoom() {
     const snapshot = await get(ref(db, 'rooms/' + code + '/info'));
     
     if (!snapshot.exists()) {
-      showToast('Salle introuvable — vérifiez le code', '⚠');
+      showToast('Salle introuvable', '⚠');
       btn.disabled = false;
       btn.innerHTML = 'Rejoindre';
       return;
@@ -1097,14 +1092,10 @@ async function joinRoom() {
     const userId = generateUserId();
     currentUser = { name: userName, id: userId };
 
-    // Ajouter participant
     await set(ref(db, 'rooms/' + code + '/participants/' + userId), {
-      name: userName,
-      joinedAt: Date.now(),
-      id: userId
+      name: userName, joinedAt: Date.now(), id: userId
     });
 
-    // Ajouter message système
     await push(ref(db, 'rooms/' + code + '/chat'), {
       type: 'system',
       text: userName + ' a rejoint la salle',
@@ -1129,7 +1120,7 @@ async function joinRoom() {
 async function enterRoom(code) {
   if (!window.firebaseReady) return showToast('Firebase non configuré', '⚠');
   
-  const { db, ref, get, onValue, onDisconnect, remove } = window.firebaseDB;
+  const { db, ref, get, onValue, onDisconnect } = window.firebaseDB;
   
   try {
     const snapshot = await get(ref(db, 'rooms/' + code + '/info'));
@@ -1146,70 +1137,56 @@ async function enterRoom(code) {
 
     const langNames = { fr: '🇫🇷 Français', en: '🇬🇧 English', ar: '🇲🇦 العربية' };
     document.getElementById('roomLang').textContent = langNames[info.lang];
-    document.getElementById('docAuthorLine').textContent = 'salle créée par ' + info.createdBy;
+    document.getElementById('docAuthorLine').textContent = 'écrit par ' + currentUser.name;
 
     const docEl = document.getElementById('docContent');
     const titleEl = document.getElementById('docTitle');
     const chatInput = document.getElementById('chatInput');
+    const myLabel = document.getElementById('myPageLabel');
 
     if (info.lang === 'ar') {
-      docEl.classList.add('rtl');
-      titleEl.classList.add('rtl');
-      docEl.placeholder = 'ابدأ الكتابة هنا... كل كلمة ستكون مرئية لجميع المشاركين.';
+      docEl.classList.add('rtl'); titleEl.classList.add('rtl');
+      docEl.placeholder = 'ابدأ الكتابة هنا...\n\nهذه صفحتك الخاصة — لا يمكن لأحد رؤيتها.\nقم بتنزيلها قبل المغادرة.';
       titleEl.placeholder = 'عنوان المخطوطة...';
       chatInput.placeholder = 'اكتب رسالة...';
+      myLabel.textContent = 'صفحتك الخاصة';
     } else if (info.lang === 'en') {
-      docEl.classList.remove('rtl');
-      titleEl.classList.remove('rtl');
-      docEl.placeholder = 'Start writing here... every word will be visible to all participants.';
+      docEl.classList.remove('rtl'); titleEl.classList.remove('rtl');
+      docEl.placeholder = 'Start writing here...\n\nThis is your personal page — no one else can see it.\nDownload it before leaving to keep what you wrote.';
       titleEl.placeholder = 'Manuscript title...';
       chatInput.placeholder = 'Write a message...';
+      myLabel.textContent = 'YOUR PERSONAL PAGE';
     } else {
-      docEl.classList.remove('rtl');
-      titleEl.classList.remove('rtl');
-      docEl.placeholder = 'Commencez à écrire ici… Chaque mot ajouté sera visible par tous les participants.';
+      docEl.classList.remove('rtl'); titleEl.classList.remove('rtl');
+      docEl.placeholder = "Commencez à écrire ici…\n\nC'est votre page personnelle — personne ne peut la voir.\nTéléchargez-la avant de partir pour garder ce que vous avez écrit.";
       titleEl.placeholder = 'Titre du manuscrit…';
       chatInput.placeholder = 'Écrire un message…';
+      myLabel.textContent = 'VOTRE PAGE PERSONNELLE';
     }
 
-    docEl.value = info.docContent || '';
-    titleEl.value = info.docTitle || '';
+    docEl.value = '';
+    titleEl.value = '';
 
-    // Listener : contenu du doc
-    docListener = ref(db, 'rooms/' + code + '/info');
-    onValue(docListener, (snap) => {
-      if (!snap.exists() || !currentRoom) return;
-      const val = snap.val();
-      if (!isTyping) {
-        if (docEl.value !== (val.docContent || '')) {
-          const pos = docEl.selectionStart;
-          docEl.value = val.docContent || '';
-          try { docEl.setSelectionRange(pos, pos); } catch(e) {}
-        }
-        if (titleEl.value !== (val.docTitle || '')) {
-          titleEl.value = val.docTitle || '';
-        }
-      }
-    });
+    // Charger le doc local s'il existe (quelqu'un qui revient dans la même salle)
+    loadLocalDoc();
 
-    // Listener : participants
+    // Participants
     participantsListener = ref(db, 'rooms/' + code + '/participants');
-    let oldParticipantsIds = [];
+    let oldIds = [];
     onValue(participantsListener, (snap) => {
       const data = snap.val() || {};
       const participants = Object.values(data);
       renderParticipants(participants);
 
-      // Notification nouveau participant
       const newIds = participants.map(p => p.id);
-      const joined = participants.find(p => !oldParticipantsIds.includes(p.id) && p.id !== currentUser?.id);
-      if (joined && oldParticipantsIds.length > 0) {
+      const joined = participants.find(p => !oldIds.includes(p.id) && p.id !== currentUser?.id);
+      if (joined && oldIds.length > 0) {
         showToast(joined.name + ' a rejoint', '❦');
       }
-      oldParticipantsIds = newIds;
+      oldIds = newIds;
     });
 
-    // Listener : chat
+    // Chat
     chatListener = ref(db, 'rooms/' + code + '/chat');
     onValue(chatListener, (snap) => {
       const data = snap.val() || {};
@@ -1217,47 +1194,102 @@ async function enterRoom(code) {
       renderChat(msgs, info.lang);
     });
 
-    // Déconnexion automatique : quand l'utilisateur ferme son onglet
-    // Firebase enlève son entrée dans participants
-    const myParticipantRef = ref(db, 'rooms/' + code + '/participants/' + currentUser.id);
-    onDisconnect(myParticipantRef).remove();
+    // Déconnexion auto
+    const myRef = ref(db, 'rooms/' + code + '/participants/' + currentUser.id);
+    onDisconnect(myRef).remove();
 
-    // Timer
-    sessionStart = Date.now();
-    if (timerInterval) clearInterval(timerInterval);
-    timerInterval = setInterval(updateTimer, 1000);
-    updateTimer();
+    updateWordCount();
   } catch (err) {
     console.error(err);
     showToast('Erreur : ' + err.message, '⚠');
   }
 }
 
-// ============ ÉCRITURE ============
-async function onEdit() {
-  if (!currentRoom || !window.firebaseReady) return;
-  isTyping = true;
-  clearTimeout(typingTimeout);
-
-  const { db, ref, update } = window.firebaseDB;
-
-  try {
-    await update(ref(db, 'rooms/' + currentRoom.code + '/info'), {
-      docContent: document.getElementById('docContent').value,
-      docTitle: document.getElementById('docTitle').value
-    });
-  } catch(e) { console.error(e); }
-
-  typingTimeout = setTimeout(() => { isTyping = false; }, 500);
+// ============ SAUVEGARDE AUTOMATIQUE LOCALE ============
+function onDocEdit() {
+  updateWordCount();
+  document.getElementById('saveStatus').textContent = '⏳ Sauvegarde...';
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => {
+    saveLocalDoc();
+  }, 500);
 }
+
+function updateWordCount() {
+  const text = document.getElementById('docContent').value.trim();
+  const words = text === '' ? 0 : text.split(/\s+/).length;
+  const lang = currentRoom?.lang || 'fr';
+  const labels = { fr: 'MOTS', en: 'WORDS', ar: 'كلمات' };
+  document.getElementById('wordCount').textContent = words + ' ' + labels[lang];
+}
+
+// ============ TÉLÉCHARGER LE DOC ============
+function getDocText() {
+  const title = document.getElementById('docTitle').value.trim();
+  const content = document.getElementById('docContent').value;
+  let txt = '';
+  if (title) txt += title + '\n' + '='.repeat(Math.min(title.length, 60)) + '\n\n';
+  txt += content;
+  if (currentUser && currentRoom) {
+    txt += '\n\n---\nÉcrit par ' + currentUser.name + ' dans la salle "' + currentRoom.name + '"';
+    txt += '\nDate : ' + new Date().toLocaleString();
+  }
+  return txt;
+}
+
+function downloadDoc() {
+  const content = document.getElementById('docContent').value.trim();
+  if (!content) return showToast('Rien à télécharger', '⚠');
+
+  const title = document.getElementById('docTitle').value.trim() || 'manuscrit';
+  const filename = title.replace(/[^a-zA-Z0-9àâäéèêëïîôöùûüÿç\- ]/g, '').replace(/\s+/g, '_') + '.txt';
+
+  const text = getDocText();
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  showToast('Texte téléchargé !', '📥');
+}
+
+function copyDoc() {
+  const content = document.getElementById('docContent').value.trim();
+  if (!content) return showToast('Rien à copier', '⚠');
+  
+  const text = getDocText();
+  copyToClipboard(text, 'Texte copié dans le presse-papier !');
+}
+
+function clearDoc() {
+  const content = document.getElementById('docContent').value.trim();
+  if (!content) return;
+  
+  const confirmed = confirm('Effacer tout le texte ? (Pensez à télécharger avant !)');
+  if (!confirmed) return;
+  
+  document.getElementById('docTitle').value = '';
+  document.getElementById('docContent').value = '';
+  saveLocalDoc();
+  updateWordCount();
+  showToast('Texte effacé', '🗑');
+}
+
+// Pour le modal de départ
+function downloadDocFromLeave() { downloadDoc(); }
+function copyDocFromLeave() { copyDoc(); }
 
 // ============ PARTICIPANTS ============
 function renderParticipants(participants) {
   const list = document.getElementById('participantsList');
-  const count = participants.length;
-  document.getElementById('participantsCount').textContent = count;
+  document.getElementById('participantsCount').textContent = participants.length;
 
-  if (count === 0) {
+  if (participants.length === 0) {
     list.innerHTML = '<div class="empty-state">Personne dans la salle</div>';
     return;
   }
@@ -1270,7 +1302,7 @@ function renderParticipants(participants) {
         <div class="p-avatar ${isYou ? 'you' : ''}">${escapeHtml(initials)}</div>
         <div class="p-info">
           <div class="p-name">${escapeHtml(p.name)}${isYou ? ' <em>(vous)</em>' : ''}</div>
-          <div class="p-state">En ligne</div>
+          <div class="p-state">En ligne · écrit</div>
         </div>
       </div>
     `;
@@ -1327,45 +1359,35 @@ async function sendChat() {
       type: 'message',
       userId: currentUser.id,
       userName: currentUser.name,
-      text,
-      time: Date.now()
+      text, time: Date.now()
     });
     input.value = '';
   } catch(e) { console.error(e); }
 }
 
-// ============ AUDIO ============
-function toggleMic() {
-  micOn = !micOn;
-  const b = document.getElementById('micBtn');
-  b.classList.toggle('active', micOn);
-  b.textContent = micOn ? '🎤' : '🔇';
-  document.getElementById('speakingStatus').textContent = micOn ? 'Audio en direct' : 'Micro coupé';
-  showToast(micOn ? 'Micro activé' : 'Micro coupé', micOn ? '🎤' : '🔇');
+// ============ JITSI (APPEL AUDIO/VIDÉO) ============
+function getJitsiUrl() {
+  if (!currentRoom) return '';
+  // URL Jitsi basée sur le code de la salle (tout le monde utilise le même)
+  return 'https://meet.jit.si/WriteTogether-' + currentRoom.code;
 }
 
-function toggleSpeaker() {
-  speakerOn = !speakerOn;
-  const b = document.getElementById('speakerBtn');
-  b.classList.toggle('active', speakerOn);
-  b.textContent = speakerOn ? '🔊' : '🔈';
-  showToast(speakerOn ? 'Son activé' : 'Son coupé', '🔊');
+function showJitsiModal() {
+  const url = getJitsiUrl();
+  document.getElementById('jitsiUrl').textContent = url;
+  document.getElementById('jitsiModal').classList.add('active');
 }
 
-function toggleCam() {
-  camOn = !camOn;
-  const b = document.getElementById('camBtn');
-  b.classList.toggle('active', camOn);
-  showToast(camOn ? 'Caméra activée' : 'Caméra désactivée', '📹');
+function openJitsi() {
+  const url = getJitsiUrl();
+  window.open(url, '_blank', 'noopener,noreferrer');
+  closeModal('jitsiModal');
+  showToast("L'appel s'ouvre dans un nouvel onglet", '🎤');
 }
 
-// ============ TIMER ============
-function updateTimer() {
-  if (!sessionStart) return;
-  const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
-  const m = Math.floor(elapsed / 60);
-  const s = elapsed % 60;
-  document.getElementById('timer').textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+function copyJitsiUrl() {
+  const url = getJitsiUrl();
+  copyToClipboard(url, 'Lien d\'appel copié !');
 }
 
 // ============ COPIER ============
@@ -1382,7 +1404,7 @@ function copyDisplayedCode() {
 function copyToClipboard(text, successMsg) {
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(
-      () => showToast(successMsg, '❦'),
+      () => showToast(successMsg, '✓'),
       () => fallbackCopy(text, successMsg)
     );
   } else {
@@ -1393,17 +1415,28 @@ function copyToClipboard(text, successMsg) {
 function fallbackCopy(text, successMsg) {
   const ta = document.createElement('textarea');
   ta.value = text;
-  ta.style.position = 'fixed';
-  ta.style.top = '-9999px';
+  ta.style.position = 'fixed'; ta.style.top = '-9999px';
   document.body.appendChild(ta);
   ta.select();
-  try { document.execCommand('copy'); showToast(successMsg, '❦'); }
-  catch(e) { showToast('Code : ' + text, '❦'); }
+  try { document.execCommand('copy'); showToast(successMsg, '✓'); }
+  catch(e) { showToast(text, '❦'); }
   document.body.removeChild(ta);
 }
 
 // ============ QUITTER ============
-async function leaveRoom() {
+function tryLeaveRoom() {
+  // Afficher modal de confirmation si texte écrit
+  const content = document.getElementById('docContent').value.trim();
+  if (content) {
+    document.getElementById('leaveModal').classList.add('active');
+  } else {
+    confirmLeave();
+  }
+}
+
+async function confirmLeave() {
+  closeModal('leaveModal');
+  
   if (!currentRoom || !currentUser) {
     document.getElementById('roomApp').classList.add('hidden');
     document.getElementById('landing').classList.remove('hidden');
@@ -1415,13 +1448,10 @@ async function leaveRoom() {
   const userName = currentUser.name;
 
   try {
-    // Détacher listeners
-    if (docListener) off(docListener);
     if (participantsListener) off(participantsListener);
     if (chatListener) off(chatListener);
-    docListener = participantsListener = chatListener = null;
+    participantsListener = chatListener = null;
 
-    // Retirer le participant
     await remove(ref(db, 'rooms/' + code + '/participants/' + currentUser.id));
     await push(ref(db, 'rooms/' + code + '/chat'), {
       type: 'system',
@@ -1429,7 +1459,6 @@ async function leaveRoom() {
       time: Date.now()
     });
 
-    // Si salle vide, la supprimer après 2 secondes
     setTimeout(async () => {
       try {
         const snap = await get(ref(db, 'rooms/' + code + '/participants'));
@@ -1440,8 +1469,6 @@ async function leaveRoom() {
     }, 2000);
   } catch(e) { console.error(e); }
 
-  if (timerInterval) clearInterval(timerInterval);
-  sessionStart = null;
   currentRoom = null;
   currentUser = null;
 
@@ -1460,7 +1487,6 @@ function showToast(msg, icon = '❦') {
   toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
-// ============ UTILS ============
 function escapeHtml(str) {
   if (!str) return '';
   return String(str).replace(/[&<>"']/g, m => ({
@@ -1468,7 +1494,7 @@ function escapeHtml(str) {
   }[m]));
 }
 
-// Rendre les fonctions accessibles globalement
+// Expose
 window.openCreateModal = openCreateModal;
 window.openJoinModal = openJoinModal;
 window.closeModal = closeModal;
@@ -1476,18 +1502,24 @@ window.selectLang = selectLang;
 window.createRoom = createRoom;
 window.joinRoom = joinRoom;
 window.enterCreatedRoom = enterCreatedRoom;
-window.leaveRoom = leaveRoom;
+window.tryLeaveRoom = tryLeaveRoom;
+window.confirmLeave = confirmLeave;
 window.copyCode = copyCode;
 window.copyDisplayedCode = copyDisplayedCode;
-window.toggleMic = toggleMic;
-window.toggleSpeaker = toggleSpeaker;
-window.toggleCam = toggleCam;
 window.sendChat = sendChat;
+window.downloadDoc = downloadDoc;
+window.copyDoc = copyDoc;
+window.clearDoc = clearDoc;
+window.downloadDocFromLeave = downloadDocFromLeave;
+window.copyDocFromLeave = copyDocFromLeave;
+window.showJitsiModal = showJitsiModal;
+window.openJitsi = openJitsi;
+window.copyJitsiUrl = copyJitsiUrl;
 
-// ============ INIT ============
+// INIT
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('docContent').addEventListener('input', onEdit);
-  document.getElementById('docTitle').addEventListener('input', onEdit);
+  document.getElementById('docContent').addEventListener('input', onDocEdit);
+  document.getElementById('docTitle').addEventListener('input', onDocEdit);
 
   document.getElementById('createName').addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('createRoomName').focus();
@@ -1515,6 +1547,16 @@ document.addEventListener('DOMContentLoaded', () => {
     else if (v.startsWith('WT') && !v.startsWith('WT-') && v.length > 2) v = 'WT-' + v.slice(2);
     if (v.length > 9) v = v.slice(0, 9);
     e.target.value = v;
+  });
+
+  // Avertir avant de fermer l'onglet si du texte est écrit
+  window.addEventListener('beforeunload', (e) => {
+    const content = document.getElementById('docContent')?.value?.trim();
+    if (content && currentRoom) {
+      e.preventDefault();
+      e.returnValue = 'Vous avez du texte non téléchargé. Êtes-vous sûr de vouloir partir ?';
+      return e.returnValue;
+    }
   });
 });
 </script>
