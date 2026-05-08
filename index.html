@@ -992,6 +992,287 @@ body.compact-mode .compact-exit-btn:hover { background: var(--rouge-sceau); colo
   50% { box-shadow: 0 0 0 8px rgba(139, 58, 47, 0); }
 }
 
+/* ============ MUSE IA ============ */
+.muse-panel {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 380px;
+  max-height: 520px;
+  background: linear-gradient(135deg, var(--parchemin-clair), var(--beige-clair));
+  border: 1px solid var(--or-fonce);
+  box-shadow: 0 20px 60px rgba(43, 36, 25, 0.3);
+  z-index: 7000;
+  display: none;
+  flex-direction: column;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.muse-panel.active { display: flex; }
+
+.muse-header {
+  background: linear-gradient(135deg, var(--encre), var(--or-fonce));
+  color: var(--parchemin);
+  padding: 0.7rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: move;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.muse-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.muse-icon {
+  font-size: 1.2rem;
+  animation: museFloat 3s ease-in-out infinite;
+}
+
+@keyframes museFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.muse-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  font-weight: 600;
+}
+
+.muse-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.75rem;
+  opacity: 0.8;
+  margin-top: 0.1rem;
+}
+
+.muse-controls { display: flex; gap: 0.3rem; }
+
+.muse-ctrl-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: var(--parchemin);
+  width: 24px; height: 24px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+
+.muse-ctrl-btn:hover { background: rgba(255, 255, 255, 0.3); }
+.muse-ctrl-btn.danger:hover { background: var(--rouge-sceau); }
+
+.muse-quick-actions {
+  padding: 0.7rem;
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(166, 124, 58, 0.3);
+  background: var(--parchemin-clair);
+}
+
+.muse-action-btn {
+  background: var(--parchemin);
+  border: 1px solid var(--or-clair);
+  padding: 0.4rem 0.7rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--encre);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.muse-action-btn:hover {
+  background: var(--or-fonce);
+  color: var(--parchemin);
+  border-color: var(--or-fonce);
+}
+
+.muse-conversation {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  min-height: 200px;
+  max-height: 300px;
+}
+
+.muse-msg {
+  animation: slideIn 0.4s ease;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.muse-msg.user-msg { flex-direction: row-reverse; }
+
+.muse-msg-bubble {
+  background: var(--parchemin);
+  border: 1px solid var(--or-clair);
+  padding: 0.7rem 0.9rem;
+  font-family: 'EB Garamond', serif;
+  font-size: 0.9rem;
+  color: var(--encre);
+  line-height: 1.5;
+  max-width: 80%;
+  border-radius: 4px;
+}
+
+.muse-msg.muse-msg-bot .muse-msg-bubble {
+  background: linear-gradient(135deg, var(--parchemin), var(--beige-clair));
+  border-color: var(--or-fonce);
+  border-left: 3px solid var(--or-fonce);
+}
+
+.muse-msg.user-msg .muse-msg-bubble {
+  background: var(--encre);
+  color: var(--parchemin);
+  border-color: var(--encre);
+}
+
+.muse-msg-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--or-clair), var(--or-fonce));
+  color: var(--parchemin);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.muse-msg.user-msg .muse-msg-avatar {
+  background: linear-gradient(135deg, var(--encre-claire), var(--encre));
+}
+
+.muse-msg-actions {
+  display: flex;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+}
+
+.muse-mini-btn {
+  background: transparent;
+  border: 1px solid var(--or-clair);
+  padding: 0.2rem 0.5rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--encre-claire);
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+
+.muse-mini-btn:hover {
+  background: var(--or-fonce);
+  color: var(--parchemin);
+  border-color: var(--or-fonce);
+}
+
+.muse-typing {
+  display: flex;
+  gap: 4px;
+  padding: 0.5rem;
+}
+
+.muse-typing span {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--or-fonce);
+  animation: typingDot 1.4s infinite;
+}
+
+.muse-typing span:nth-child(2) { animation-delay: 0.2s; }
+.muse-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingDot {
+  0%, 60%, 100% { opacity: 0.3; transform: scale(0.8); }
+  30% { opacity: 1; transform: scale(1); }
+}
+
+.muse-input-wrap {
+  padding: 0.7rem 1rem;
+  border-top: 1px solid rgba(166, 124, 58, 0.3);
+  background: var(--parchemin-clair);
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.muse-input {
+  flex: 1;
+  padding: 0.5rem 0.8rem;
+  background: var(--parchemin);
+  border: 1px solid rgba(166, 124, 58, 0.3);
+  font-family: 'EB Garamond', serif;
+  font-size: 0.9rem;
+  color: var(--encre);
+  outline: none;
+}
+
+.muse-input:focus { border-color: var(--or-fonce); }
+
+.muse-send-btn {
+  background: var(--encre);
+  color: var(--parchemin);
+  border: none;
+  padding: 0 0.9rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.muse-send-btn:hover { background: var(--or-fonce); }
+.muse-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.muse-empty {
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--encre-claire);
+  font-size: 0.95rem;
+  padding: 1.5rem 1rem;
+  line-height: 1.6;
+}
+
+.muse-empty::before {
+  content: '✨';
+  display: block;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Bouton dans la toolbar */
+.tool-icon-btn.muse-btn {
+  background: linear-gradient(135deg, var(--or-clair), var(--or-fonce));
+  color: var(--parchemin);
+  border-color: var(--or-fonce);
+}
+
+.tool-icon-btn.muse-btn:hover {
+  background: var(--encre);
+  border-color: var(--encre);
+  color: var(--parchemin);
+}
+
 /* TOAST */
 .toast { position: fixed; top: 2rem; right: 2rem; background: var(--encre); color: var(--parchemin); padding: 1rem 1.3rem; font-family: 'Cormorant Garamond', serif; font-size: 1rem; box-shadow: 0 15px 40px rgba(0,0,0,0.3); z-index: 2000; transform: translateX(450px); transition: transform 0.4s ease; display: flex; align-items: center; gap: 0.6rem; border-left: 3px solid var(--or-fonce); }
 .toast.show { transform: translateX(0); }
@@ -1324,6 +1605,7 @@ body.compact-mode .compact-exit-btn:hover { background: var(--rouge-sceau); colo
     <!-- TOOLBAR EN HAUT À DROITE -->
     <div class="header-toolbar">
       <button class="tool-icon-btn" onclick="openFontModal()" data-tooltip="Police">𝐀</button>
+      <button class="tool-icon-btn muse-btn" onclick="toggleMuse()" data-tooltip="La Muse — IA d'écriture">✨</button>
       <button class="tool-icon-btn" onclick="newPrompt()" data-tooltip="Idée d'écriture">💡</button>
       <button class="tool-icon-btn" onclick="openTimerModal()" data-tooltip="Minuteur">⏱</button>
       <button class="tool-icon-btn" onclick="openGoalModal()" data-tooltip="Objectif mots">🎯</button>
@@ -1402,6 +1684,47 @@ body.compact-mode .compact-exit-btn:hover { background: var(--rouge-sceau); colo
         </div>
       </div>
     </aside>
+  </div>
+</div>
+
+<!-- ============ PANNEAU MUSE (IA) ============ -->
+<div class="muse-panel" id="musePanel">
+  <div class="muse-header" id="museHeader">
+    <div class="muse-header-left">
+      <span class="muse-icon">✨</span>
+      <div>
+        <div class="muse-title">LA MUSE</div>
+        <div class="muse-subtitle">Votre assistante d'écriture</div>
+      </div>
+    </div>
+    <div class="muse-controls">
+      <button class="muse-ctrl-btn" onclick="clearMuseConversation()" title="Effacer">🗑</button>
+      <button class="muse-ctrl-btn danger" onclick="toggleMuse()" title="Fermer">✕</button>
+    </div>
+  </div>
+
+  <div class="muse-quick-actions">
+    <button class="muse-action-btn" onclick="museQuickAction('continue')">📝 Continue mon texte</button>
+    <button class="muse-action-btn" onclick="museQuickAction('idea')">💡 Donne-moi une idée</button>
+    <button class="muse-action-btn" onclick="museQuickAction('character')">🎭 Crée un personnage</button>
+    <button class="muse-action-btn" onclick="museQuickAction('place')">🌍 Décris un lieu</button>
+    <button class="muse-action-btn" onclick="museQuickAction('reformulate')">🔄 Reformule mon texte</button>
+    <button class="muse-action-btn" onclick="museQuickAction('motivate')">💪 Motive-moi</button>
+    <button class="muse-action-btn" onclick="museQuickAction('unblock')">🔓 Débloque-moi</button>
+    <button class="muse-action-btn" onclick="museQuickAction('plot')">🎬 Twist d'intrigue</button>
+  </div>
+
+  <div class="muse-conversation" id="museConversation">
+    <div class="muse-empty" id="museEmpty">
+      Bonjour ! Je suis votre Muse.<br>
+      Cliquez sur un raccourci ci-dessus<br>
+      ou posez-moi votre question.
+    </div>
+  </div>
+
+  <div class="muse-input-wrap">
+    <input type="text" class="muse-input" id="museInput" placeholder="Demande-moi quelque chose..." onkeydown="if(event.key==='Enter')sendToMuse()">
+    <button class="muse-send-btn" id="museSendBtn" onclick="sendToMuse()">✒</button>
   </div>
 </div>
 
@@ -2355,6 +2678,307 @@ async function sendChat() {
   } catch(e) { console.error(e); }
 }
 
+// ============ LA MUSE (IA) ============
+let museOpen = false;
+let museMessages = [];
+let museLoading = false;
+
+function toggleMuse() {
+  museOpen = !museOpen;
+  const panel = document.getElementById('musePanel');
+  panel.classList.toggle('active', museOpen);
+  if (museOpen) {
+    setupMuseDrag();
+    setTimeout(() => document.getElementById('museInput').focus(), 200);
+  }
+}
+
+function clearMuseConversation() {
+  if (museMessages.length === 0) return;
+  if (!confirm('Effacer la conversation avec la Muse ?')) return;
+  museMessages = [];
+  document.getElementById('museConversation').innerHTML = `
+    <div class="muse-empty" id="museEmpty">
+      Bonjour ! Je suis votre Muse.<br>
+      Cliquez sur un raccourci ci-dessus<br>
+      ou posez-moi votre question.
+    </div>
+  `;
+}
+
+function museQuickAction(type) {
+  const docTitle = document.getElementById('docTitle').value.trim();
+  const docContent = document.getElementById('docContent').value.trim();
+  const lang = currentRoom?.lang || 'fr';
+
+  let prompt = '';
+  let userLabel = '';
+
+  switch(type) {
+    case 'continue':
+      if (!docContent) {
+        addMuseBotMsg("Écris d'abord quelques phrases dans ton manuscrit, et je continuerai pour toi !");
+        return;
+      }
+      const lastPart = docContent.slice(-500);
+      userLabel = "📝 Continue mon texte";
+      prompt = `Tu es une assistante d'écriture créative. Voici le début d'un texte littéraire (en ${lang === 'ar' ? 'arabe' : lang === 'en' ? 'anglais' : 'français'}) :\n\n"${lastPart}"\n\nContinue ce texte avec 2-3 phrases dans le même style et le même ton. Sois créative et littéraire. Ne donne que la suite, sans introduction.`;
+      break;
+
+    case 'idea':
+      userLabel = "💡 Donne-moi une idée";
+      prompt = `Tu es une assistante d'écriture. Donne-moi une idée originale et inspirante de début d'histoire ou de scène littéraire en ${lang === 'ar' ? 'arabe' : lang === 'en' ? 'anglais' : 'français'}. Sois poétique, mystérieuse ou intrigante. Une seule idée concise (2-3 phrases maximum).`;
+      break;
+
+    case 'character':
+      userLabel = "🎭 Crée un personnage";
+      prompt = `Tu es une assistante d'écriture. Crée un personnage littéraire original en ${lang === 'ar' ? 'arabe' : lang === 'en' ? 'anglais' : 'français'}. Donne : nom, âge approximatif, un trait physique mémorable, un trait de caractère unique, et un secret ou une obsession. Sois créative et concise (5-6 lignes).`;
+      break;
+
+    case 'place':
+      userLabel = "🌍 Décris un lieu";
+      prompt = `Tu es une assistante d'écriture. Décris un lieu littéraire évocateur en ${lang === 'ar' ? 'arabe' : lang === 'en' ? 'anglais' : 'français'}. Crée une atmosphère sensorielle (sons, odeurs, lumière, textures). 3-4 phrases maximum, style littéraire et poétique.`;
+      break;
+
+    case 'reformulate':
+      if (!docContent) {
+        addMuseBotMsg("Écris d'abord quelque chose dans ton manuscrit, et je le reformulerai joliment !");
+        return;
+      }
+      const toReform = docContent.slice(-300);
+      userLabel = "🔄 Reformule mon texte";
+      prompt = `Tu es une assistante d'écriture. Reformule ce texte en ${lang === 'ar' ? 'arabe' : lang === 'en' ? 'anglais' : 'français'} en gardant le sens mais avec un style plus littéraire et élégant :\n\n"${toReform}"\n\nDonne uniquement la version reformulée, sans introduction.`;
+      break;
+
+    case 'motivate':
+      userLabel = "💪 Motive-moi";
+      prompt = `Tu es une assistante d'écriture chaleureuse. Donne un message court et motivant à un écrivain en ${lang === 'ar' ? 'arabe' : lang === 'en' ? 'anglais' : 'français'}, qui est en train d'écrire. Sois inspirante, citationnelle peut-être. 2-3 phrases maximum.`;
+      break;
+
+    case 'unblock':
+      userLabel = "🔓 Débloque-moi";
+      prompt = `Tu es une assistante d'écriture. Un écrivain est bloqué (page blanche). Donne 3 questions courtes et stimulantes en ${lang === 'ar' ? 'arabe' : lang === 'en' ? 'anglais' : 'français'} qui peuvent l'aider à débloquer son imagination. Format : liste à puces, brève.`;
+      break;
+
+    case 'plot':
+      userLabel = "🎬 Twist d'intrigue";
+      const ctx = docContent ? `Contexte du texte actuel : "${docContent.slice(-400)}"\n\n` : '';
+      prompt = `Tu es une assistante d'écriture. ${ctx}Suggère un twist d'intrigue surprenant et original en ${lang === 'ar' ? 'arabe' : lang === 'en' ? 'anglais' : 'français'}. 2-3 phrases concises et percutantes.`;
+      break;
+  }
+
+  callMuse(prompt, userLabel);
+}
+
+async function sendToMuse() {
+  const input = document.getElementById('museInput');
+  const text = input.value.trim();
+  if (!text || museLoading) return;
+
+  input.value = '';
+  
+  const lang = currentRoom?.lang || 'fr';
+  const docContent = document.getElementById('docContent').value.trim();
+  const ctx = docContent ? `\n\nContexte du texte de l'écrivain : "${docContent.slice(-400)}"` : '';
+  const prompt = `Tu es La Muse, une assistante d'écriture créative et chaleureuse, spécialisée en littérature. Réponds en ${lang === 'ar' ? 'arabe' : lang === 'en' ? 'anglais' : 'français'}, de manière concise (3-5 phrases maximum) et inspirante.\n\nQuestion de l'écrivain : "${text}"${ctx}`;
+
+  callMuse(prompt, text);
+}
+
+async function callMuse(prompt, userLabel) {
+  // Cacher le message vide
+  const empty = document.getElementById('museEmpty');
+  if (empty) empty.remove();
+
+  // Afficher message utilisateur
+  if (userLabel) {
+    addMuseUserMsg(userLabel);
+  }
+
+  // Afficher indicateur de chargement
+  museLoading = true;
+  document.getElementById('museSendBtn').disabled = true;
+  const loadingId = 'muse_loading_' + Date.now();
+  addMuseBotTyping(loadingId);
+
+  try {
+    // Appel à Pollinations.ai (API gratuite, pas besoin de clé)
+    const encoded = encodeURIComponent(prompt);
+    const response = await fetch(`https://text.pollinations.ai/${encoded}?model=openai`, {
+      method: 'GET'
+    });
+
+    if (!response.ok) throw new Error('API error');
+
+    let result = await response.text();
+    
+    // Nettoyer la réponse
+    result = result.trim();
+    
+    // Supprimer le message de loading
+    document.getElementById(loadingId)?.remove();
+
+    if (!result) {
+      addMuseBotMsg("Désolée, je n'ai pas réussi à trouver les mots cette fois. Réessaie ?");
+    } else {
+      addMuseBotMsg(result, true);
+    }
+  } catch (err) {
+    console.error('Muse error:', err);
+    document.getElementById(loadingId)?.remove();
+    
+    // Fallback : utiliser des réponses pré-écrites
+    const fallback = getFallbackResponse(prompt);
+    addMuseBotMsg(fallback);
+  } finally {
+    museLoading = false;
+    document.getElementById('museSendBtn').disabled = false;
+  }
+}
+
+function getFallbackResponse(prompt) {
+  // Réponses de secours si l'API ne répond pas
+  const fallbacks = [
+    "✨ Mon inspiration est en train de revenir... essaie encore dans un instant !",
+    "🌙 Je suis temporairement dans la lune. Laisse-moi quelques secondes...",
+    "📚 Désolée, ma plume est sèche pour le moment. Réessaie dans quelques instants !"
+  ];
+  return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+}
+
+function addMuseUserMsg(text) {
+  const conv = document.getElementById('museConversation');
+  const initials = (currentUser?.name || 'V').split(' ').map(w => w[0]).join('').slice(0, 1).toUpperCase();
+  const msg = document.createElement('div');
+  msg.className = 'muse-msg user-msg';
+  msg.innerHTML = `
+    <div class="muse-msg-avatar">${escapeHtml(initials)}</div>
+    <div class="muse-msg-bubble">${escapeHtml(text)}</div>
+  `;
+  conv.appendChild(msg);
+  conv.scrollTop = conv.scrollHeight;
+  museMessages.push({ role: 'user', text });
+}
+
+function addMuseBotMsg(text, withActions = false) {
+  const conv = document.getElementById('museConversation');
+  const msg = document.createElement('div');
+  msg.className = 'muse-msg muse-msg-bot';
+  
+  const escapedText = escapeHtml(text);
+  const msgId = 'muse_msg_' + Date.now();
+  
+  let actionsHtml = '';
+  if (withActions) {
+    actionsHtml = `
+      <div class="muse-msg-actions">
+        <button class="muse-mini-btn" onclick="insertMuseInDoc('${msgId}')">📝 Insérer dans mon texte</button>
+        <button class="muse-mini-btn" onclick="copyMuseMsg('${msgId}')">📋 Copier</button>
+      </div>
+    `;
+  }
+  
+  msg.innerHTML = `
+    <div class="muse-msg-avatar">✨</div>
+    <div>
+      <div class="muse-msg-bubble" id="${msgId}_text">${escapedText.replace(/\n/g, '<br>')}</div>
+      ${actionsHtml}
+    </div>
+  `;
+  conv.appendChild(msg);
+  conv.scrollTop = conv.scrollHeight;
+  museMessages.push({ role: 'bot', text });
+}
+
+function addMuseBotTyping(id) {
+  const conv = document.getElementById('museConversation');
+  const msg = document.createElement('div');
+  msg.id = id;
+  msg.className = 'muse-msg muse-msg-bot';
+  msg.innerHTML = `
+    <div class="muse-msg-avatar">✨</div>
+    <div class="muse-msg-bubble">
+      <div class="muse-typing"><span></span><span></span><span></span></div>
+    </div>
+  `;
+  conv.appendChild(msg);
+  conv.scrollTop = conv.scrollHeight;
+}
+
+function insertMuseInDoc(msgId) {
+  const textEl = document.getElementById(msgId + '_text');
+  if (!textEl) return;
+  
+  // Récupère le texte original (pas le HTML)
+  const text = textEl.innerText;
+  const docEl = document.getElementById('docContent');
+  
+  // Insérer à la position du curseur ou à la fin
+  const pos = docEl.selectionStart;
+  const before = docEl.value.slice(0, pos);
+  const after = docEl.value.slice(pos);
+  
+  const separator = (before && !before.endsWith('\n')) ? '\n\n' : '';
+  docEl.value = before + separator + text + after;
+  
+  onDocEdit();
+  showToast('Inséré dans votre texte !', '📝');
+}
+
+function copyMuseMsg(msgId) {
+  const textEl = document.getElementById(msgId + '_text');
+  if (!textEl) return;
+  copyToClipboard(textEl.innerText, 'Copié !');
+}
+
+// Drag du panneau Muse
+let museDragging = false;
+let museDragOffsetX = 0, museDragOffsetY = 0;
+
+function setupMuseDrag() {
+  const header = document.getElementById('museHeader');
+  if (!header || header.dataset.dragSetup === 'yes') return;
+  header.dataset.dragSetup = 'yes';
+  header.addEventListener('mousedown', startMuseDrag);
+}
+
+function startMuseDrag(e) {
+  if (e.target.closest('.muse-ctrl-btn')) return;
+  e.preventDefault();
+  museDragging = true;
+  const panel = document.getElementById('musePanel');
+  const rect = panel.getBoundingClientRect();
+  museDragOffsetX = e.clientX - rect.left;
+  museDragOffsetY = e.clientY - rect.top;
+  
+  document.addEventListener('mousemove', moveMuse);
+  document.addEventListener('mouseup', stopMuseDrag);
+}
+
+function moveMuse(e) {
+  if (!museDragging) return;
+  e.preventDefault();
+  const panel = document.getElementById('musePanel');
+  let x = e.clientX - museDragOffsetX;
+  let y = e.clientY - museDragOffsetY;
+  
+  const maxX = window.innerWidth - panel.offsetWidth;
+  const maxY = window.innerHeight - panel.offsetHeight;
+  x = Math.max(0, Math.min(x, maxX));
+  y = Math.max(0, Math.min(y, maxY));
+  
+  panel.style.left = x + 'px';
+  panel.style.top = y + 'px';
+  panel.style.right = 'auto';
+  panel.style.bottom = 'auto';
+}
+
+function stopMuseDrag() {
+  museDragging = false;
+  document.removeEventListener('mousemove', moveMuse);
+  document.removeEventListener('mouseup', stopMuseDrag);
+}
+
 // ============ JITSI INTÉGRÉ ============
 let jitsiAPI = null;
 let jitsiSizeMode = 'normal'; // 'normal' ou 'large'
@@ -2815,7 +3439,9 @@ Object.assign(window, {
   openShareTextModal, confirmShareText,
   openPollModal, confirmPoll, votePoll,
   showReactionPicker, addReaction,
-  toggleCompactMode
+  toggleCompactMode,
+  toggleMuse, clearMuseConversation, museQuickAction, sendToMuse,
+  insertMuseInDoc, copyMuseMsg
 });
 
 // INIT
