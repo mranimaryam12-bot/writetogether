@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Amiri:wght@400;700&family=Playfair+Display:wght@400;500;600&family=Merriweather:wght@400;700&family=Lora:wght@400;500;600&family=Roboto+Slab:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.min.js"></script>
+<script src="https://meet.jit.si/external_api.js"></script>
 <style>
 :root {
   --or-fonce: #a67c3a;
@@ -805,6 +806,192 @@ body.compact-mode .compact-exit-btn:hover { background: var(--rouge-sceau); colo
 
 .compact-exit-btn { display: none; }
 
+/* ============ JITSI INTÉGRÉ (fenêtre flottante) ============ */
+.jitsi-floating {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 380px;
+  height: 280px;
+  min-width: 280px;
+  min-height: 200px;
+  max-width: 90vw;
+  max-height: 90vh;
+  background: #1a1a1a;
+  border: 2px solid var(--vert-jitsi);
+  border-radius: 8px;
+  z-index: 8000;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  resize: both;
+  display: none;
+  flex-direction: column;
+}
+
+.jitsi-floating.active { display: flex; }
+
+.jitsi-floating-header {
+  background: var(--vert-jitsi);
+  color: var(--parchemin);
+  padding: 0.5rem 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: move;
+  user-select: none;
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  flex-shrink: 0;
+}
+
+.jitsi-floating-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.jitsi-status-dot {
+  width: 8px;
+  height: 8px;
+  background: #4ade80;
+  border-radius: 50%;
+  animation: blink 1.5s infinite;
+}
+
+.jitsi-floating-controls {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.jitsi-ctrl-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: var(--parchemin);
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+
+.jitsi-ctrl-btn:hover { background: rgba(255, 255, 255, 0.3); }
+.jitsi-ctrl-btn.danger:hover { background: var(--rouge-sceau); }
+
+.jitsi-floating-body {
+  flex: 1;
+  position: relative;
+  background: #000;
+  overflow: hidden;
+}
+
+#jitsiContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.jitsi-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: var(--parchemin);
+  background: #1a1a1a;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  gap: 1rem;
+  z-index: 5;
+}
+
+.jitsi-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--vert-jitsi);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.jitsi-name-prompt {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1.5rem;
+  z-index: 10;
+}
+
+.jitsi-name-prompt h4 {
+  color: var(--parchemin);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.jitsi-name-prompt p {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.jitsi-prompt-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.jitsi-prompt-btn {
+  padding: 0.6rem 1.2rem;
+  background: var(--vert-jitsi);
+  color: var(--parchemin);
+  border: none;
+  cursor: pointer;
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.jitsi-prompt-btn:hover { background: #1f5a40; }
+
+.jitsi-prompt-btn.secondary {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.jitsi-prompt-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Bouton appel actif */
+.btn-jitsi.calling {
+  background: var(--rouge-sceau);
+  border-color: var(--rouge-sceau);
+  animation: pulseCall 2s infinite;
+}
+
+@keyframes pulseCall {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(139, 58, 47, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(139, 58, 47, 0); }
+}
+
 /* TOAST */
 .toast { position: fixed; top: 2rem; right: 2rem; background: var(--encre); color: var(--parchemin); padding: 1rem 1.3rem; font-family: 'Cormorant Garamond', serif; font-size: 1rem; box-shadow: 0 15px 40px rgba(0,0,0,0.3); z-index: 2000; transform: translateX(450px); transition: transform 0.4s ease; display: flex; align-items: center; gap: 0.6rem; border-left: 3px solid var(--or-fonce); }
 .toast.show { transform: translateX(0); }
@@ -948,15 +1135,18 @@ body.compact-mode .compact-exit-btn:hover { background: var(--rouge-sceau); colo
   <div class="modal">
     <div class="modal-label">APPEL VOCAL & VIDÉO</div>
     <h3 class="modal-title">Parler avec la <em>salle</em></h3>
-    <p class="modal-subtitle">Tous les participants utilisent le même lien Jitsi pour se retrouver</p>
+    <p class="modal-subtitle">Tous les participants utilisent le même salon pour se retrouver</p>
     <div class="jitsi-info-modal">
-      <p style="font-family:'EB Garamond',serif; color:var(--encre-claire); margin-bottom:0.5rem;">Lien de l'appel :</p>
-      <div class="jitsi-url-box" id="jitsiUrl" onclick="copyJitsiUrl()">chargement...</div>
-      <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.85rem; color:var(--encre-claire); margin-top:1rem;">Cliquez pour copier, ou ouvrez directement ci-dessous</p>
+      <p style="font-family:'EB Garamond',serif; color:var(--encre-claire); margin-bottom:1rem;">Choisissez comment ouvrir l'appel :</p>
+      <div style="display:flex; flex-direction:column; gap:0.6rem; margin-bottom:1rem;">
+        <button class="btn btn-primary" onclick="startJitsiInline()">📺 Petite fenêtre dans le site (recommandé)</button>
+        <button class="btn btn-outline" onclick="openJitsi()">↗ Ouvrir Jitsi en grand dans un nouvel onglet</button>
+      </div>
+      <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.85rem; color:var(--encre-claire);">Avec la petite fenêtre, vous pouvez écrire et parler en même temps !</p>
     </div>
     <div class="modal-actions">
       <button class="btn btn-outline" onclick="closeModal('jitsiModal')">Fermer</button>
-      <button class="btn btn-primary" onclick="openJitsi()">🎤 Rejoindre l'appel</button>
+      <button class="btn btn-outline" onclick="copyJitsiUrl()">Copier le lien</button>
     </div>
   </div>
 </div>
@@ -1212,6 +1402,28 @@ body.compact-mode .compact-exit-btn:hover { background: var(--rouge-sceau); colo
         </div>
       </div>
     </aside>
+  </div>
+</div>
+
+<!-- ============ FENÊTRE JITSI FLOTTANTE ============ -->
+<div class="jitsi-floating" id="jitsiFloating">
+  <div class="jitsi-floating-header" id="jitsiHeader">
+    <div class="jitsi-floating-header-left">
+      <span class="jitsi-status-dot"></span>
+      <span>APPEL · <span id="jitsiRoomName">WriteTogether</span></span>
+    </div>
+    <div class="jitsi-floating-controls">
+      <button class="jitsi-ctrl-btn" onclick="toggleJitsiSize()" title="Redimensionner" id="jitsiSizeBtn">⊞</button>
+      <button class="jitsi-ctrl-btn" onclick="openJitsiExternal()" title="Ouvrir en grand dans un onglet">↗</button>
+      <button class="jitsi-ctrl-btn danger" onclick="closeJitsiCall()" title="Quitter l'appel">✕</button>
+    </div>
+  </div>
+  <div class="jitsi-floating-body">
+    <div class="jitsi-loading" id="jitsiLoading">
+      <div class="jitsi-loading-spinner"></div>
+      <div>Connexion à l'appel...</div>
+    </div>
+    <div id="jitsiContainer"></div>
   </div>
 </div>
 
@@ -2143,11 +2355,241 @@ async function sendChat() {
   } catch(e) { console.error(e); }
 }
 
-// ============ JITSI ============
+// ============ JITSI INTÉGRÉ ============
+let jitsiAPI = null;
+let jitsiSizeMode = 'normal'; // 'normal' ou 'large'
+
 function getJitsiUrl() { return currentRoom ? 'https://meet.jit.si/WriteTogether-' + currentRoom.code : ''; }
-function showJitsiModal() { document.getElementById('jitsiUrl').textContent = getJitsiUrl(); document.getElementById('jitsiModal').classList.add('active'); }
-function openJitsi() { window.open(getJitsiUrl(), '_blank', 'noopener,noreferrer'); closeModal('jitsiModal'); showToast("L'appel s'ouvre", '🎤'); }
+function getJitsiRoomName() { return currentRoom ? 'WriteTogether-' + currentRoom.code : ''; }
+
+function showJitsiModal() {
+  if (jitsiAPI) {
+    // Si déjà en appel, juste afficher la fenêtre
+    document.getElementById('jitsiFloating').classList.add('active');
+    return;
+  }
+  document.getElementById('jitsiModal').classList.add('active');
+}
+
+function startJitsiInline() {
+  closeModal('jitsiModal');
+  
+  if (!currentRoom || !currentUser) return;
+  
+  // Vérifier que l'API Jitsi est chargée
+  if (typeof JitsiMeetExternalAPI === 'undefined') {
+    showToast("L'API Jitsi n'est pas chargée — ouverture dans un onglet", '⚠');
+    return openJitsi();
+  }
+  
+  const floating = document.getElementById('jitsiFloating');
+  floating.classList.add('active');
+  document.getElementById('jitsiLoading').style.display = 'flex';
+  document.getElementById('jitsiRoomName').textContent = currentRoom.name;
+  
+  // Marquer le bouton appel comme actif
+  document.querySelectorAll('.btn-jitsi').forEach(b => b.classList.add('calling'));
+  
+  try {
+    const domain = 'meet.jit.si';
+    const options = {
+      roomName: getJitsiRoomName(),
+      width: '100%',
+      height: '100%',
+      parentNode: document.getElementById('jitsiContainer'),
+      userInfo: {
+        displayName: currentUser.name
+      },
+      configOverwrite: {
+        startWithAudioMuted: false,
+        startWithVideoMuted: true, // Démarre sans vidéo (l'utilisateur peut l'activer)
+        prejoinPageEnabled: false,
+        disableDeepLinking: true,
+        toolbarButtons: [
+          'microphone', 'camera', 'desktop', 'fullscreen',
+          'hangup', 'chat', 'settings', 'raisehand',
+          'tileview', 'select-background'
+        ]
+      },
+      interfaceConfigOverwrite: {
+        SHOW_JITSI_WATERMARK: false,
+        SHOW_WATERMARK_FOR_GUESTS: false,
+        DEFAULT_BACKGROUND: '#1a1a1a',
+        DISABLE_VIDEO_BACKGROUND: false,
+        TOOLBAR_BUTTONS: [
+          'microphone', 'camera', 'desktop', 'hangup',
+          'chat', 'settings', 'raisehand', 'tileview'
+        ]
+      }
+    };
+    
+    jitsiAPI = new JitsiMeetExternalAPI(domain, options);
+    
+    // Cacher loading quand chargé
+    jitsiAPI.addEventListener('videoConferenceJoined', () => {
+      document.getElementById('jitsiLoading').style.display = 'none';
+      showToast("Connecté à l'appel !", '🎤');
+    });
+    
+    // Quand on quitte
+    jitsiAPI.addEventListener('readyToClose', () => {
+      closeJitsiCall();
+    });
+    
+    // Si chargement trop long, cacher loading après 5s
+    setTimeout(() => {
+      document.getElementById('jitsiLoading').style.display = 'none';
+    }, 5000);
+    
+    setupJitsiDrag();
+  } catch(e) {
+    console.error('Erreur Jitsi:', e);
+    showToast("Erreur, ouverture dans un onglet", '⚠');
+    closeJitsiCall();
+    openJitsi();
+  }
+}
+
+function closeJitsiCall() {
+  if (jitsiAPI) {
+    try { jitsiAPI.dispose(); } catch(e) {}
+    jitsiAPI = null;
+  }
+  document.getElementById('jitsiFloating').classList.remove('active');
+  document.getElementById('jitsiContainer').innerHTML = '';
+  document.querySelectorAll('.btn-jitsi').forEach(b => b.classList.remove('calling'));
+  showToast("Appel terminé", '👋');
+}
+
+function toggleJitsiSize() {
+  const floating = document.getElementById('jitsiFloating');
+  const btn = document.getElementById('jitsiSizeBtn');
+  
+  if (jitsiSizeMode === 'normal') {
+    // Agrandir
+    floating.style.width = '700px';
+    floating.style.height = '500px';
+    floating.style.top = '50px';
+    floating.style.left = '50%';
+    floating.style.transform = 'translateX(-50%)';
+    floating.style.right = 'auto';
+    floating.style.bottom = 'auto';
+    btn.textContent = '⊟';
+    btn.title = 'Réduire';
+    jitsiSizeMode = 'large';
+  } else {
+    // Réduire
+    floating.style.width = '380px';
+    floating.style.height = '280px';
+    floating.style.bottom = '20px';
+    floating.style.right = '20px';
+    floating.style.top = 'auto';
+    floating.style.left = 'auto';
+    floating.style.transform = '';
+    btn.textContent = '⊞';
+    btn.title = 'Agrandir';
+    jitsiSizeMode = 'normal';
+  }
+}
+
+function openJitsiExternal() {
+  window.open(getJitsiUrl(), '_blank', 'noopener,noreferrer');
+  showToast("Ouvert dans un nouvel onglet", '↗');
+}
+
+function openJitsi() { 
+  closeModal('jitsiModal');
+  window.open(getJitsiUrl(), '_blank', 'noopener,noreferrer'); 
+  showToast("Appel ouvert dans un onglet", '🎤'); 
+}
+
 function copyJitsiUrl() { copyToClipboard(getJitsiUrl(), 'Lien copié !'); }
+
+// Drag de la fenêtre Jitsi
+let jitsiDragging = false;
+let jitsiDragOffsetX = 0, jitsiDragOffsetY = 0;
+
+function setupJitsiDrag() {
+  const header = document.getElementById('jitsiHeader');
+  if (!header) return;
+  
+  header.addEventListener('mousedown', startJitsiDrag);
+  header.addEventListener('touchstart', startJitsiTouchDrag, { passive: false });
+}
+
+function startJitsiDrag(e) {
+  // Ignorer les clics sur les boutons
+  if (e.target.closest('.jitsi-ctrl-btn')) return;
+  
+  e.preventDefault();
+  jitsiDragging = true;
+  const floating = document.getElementById('jitsiFloating');
+  const rect = floating.getBoundingClientRect();
+  jitsiDragOffsetX = e.clientX - rect.left;
+  jitsiDragOffsetY = e.clientY - rect.top;
+  floating.style.transition = 'none';
+  
+  document.addEventListener('mousemove', moveJitsi);
+  document.addEventListener('mouseup', stopJitsiDrag);
+}
+
+function moveJitsi(e) {
+  if (!jitsiDragging) return;
+  e.preventDefault();
+  const floating = document.getElementById('jitsiFloating');
+  let x = e.clientX - jitsiDragOffsetX;
+  let y = e.clientY - jitsiDragOffsetY;
+  
+  const maxX = window.innerWidth - floating.offsetWidth;
+  const maxY = window.innerHeight - floating.offsetHeight;
+  x = Math.max(0, Math.min(x, maxX));
+  y = Math.max(0, Math.min(y, maxY));
+  
+  floating.style.left = x + 'px';
+  floating.style.top = y + 'px';
+  floating.style.right = 'auto';
+  floating.style.bottom = 'auto';
+  floating.style.transform = '';
+}
+
+function stopJitsiDrag() {
+  jitsiDragging = false;
+  document.removeEventListener('mousemove', moveJitsi);
+  document.removeEventListener('mouseup', stopJitsiDrag);
+}
+
+function startJitsiTouchDrag(e) {
+  if (e.target.closest('.jitsi-ctrl-btn')) return;
+  e.preventDefault();
+  jitsiDragging = true;
+  const touch = e.touches[0];
+  const floating = document.getElementById('jitsiFloating');
+  const rect = floating.getBoundingClientRect();
+  jitsiDragOffsetX = touch.clientX - rect.left;
+  jitsiDragOffsetY = touch.clientY - rect.top;
+  
+  document.addEventListener('touchmove', moveJitsiTouch, { passive: false });
+  document.addEventListener('touchend', stopJitsiDrag);
+}
+
+function moveJitsiTouch(e) {
+  if (!jitsiDragging) return;
+  e.preventDefault();
+  const touch = e.touches[0];
+  const floating = document.getElementById('jitsiFloating');
+  let x = touch.clientX - jitsiDragOffsetX;
+  let y = touch.clientY - jitsiDragOffsetY;
+  
+  const maxX = window.innerWidth - floating.offsetWidth;
+  const maxY = window.innerHeight - floating.offsetHeight;
+  x = Math.max(0, Math.min(x, maxX));
+  y = Math.max(0, Math.min(y, maxY));
+  
+  floating.style.left = x + 'px';
+  floating.style.top = y + 'px';
+  floating.style.right = 'auto';
+  floating.style.bottom = 'auto';
+}
 
 // ============ COPIER ============
 function copyCode() { if (currentRoom) copyToClipboard(currentRoom.code, 'Code copié : ' + currentRoom.code); }
@@ -2176,6 +2618,10 @@ function tryLeaveRoom() {
 
 async function confirmLeave() {
   closeModal('leaveModal');
+  
+  // Fermer Jitsi si actif
+  if (jitsiAPI) closeJitsiCall();
+  
   if (!currentRoom || !currentUser) {
     document.getElementById('roomApp').classList.add('hidden');
     document.getElementById('landing').classList.remove('hidden');
@@ -2359,7 +2805,8 @@ function escapeHtml(str) {
 Object.assign(window, {
   openCreateModal, openJoinModal, closeModal, selectLang, createRoom, joinRoom,
   enterCreatedRoom, tryLeaveRoom, confirmLeave, copyCode, copyDisplayedCode,
-  sendChat, downloadDoc, downloadDocx, copyDoc, showJitsiModal, openJitsi, copyJitsiUrl,
+  sendChat, downloadDoc, downloadDocx, copyDoc, 
+  showJitsiModal, openJitsi, copyJitsiUrl, startJitsiInline, closeJitsiCall, toggleJitsiSize, openJitsiExternal,
   openFontModal, selectFont, changeFontSize, resetFont,
   newPrompt, hidePrompt,
   openTimerModal, selectTimerPreset, startStopTimer,
